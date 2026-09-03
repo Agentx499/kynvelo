@@ -191,6 +191,15 @@ Whenever an error is encountered, a bug is fixed, or a new pattern is proven suc
 
 ---
 
+### Pattern 010: Three.js WebGL 3D Integration in Next.js 15 & Unified Multi-Audience Storytelling
+- **Problem:** Toggling entire audiences away makes marketing pages feel fractured, and flat 2D cards feel like AI-generated generic templates.
+- **Solution:** 
+  1. *WebGL Three.js Engine:* Procedural 3D models (Olympic Barbell + Turnstile Gate) rendered in a single WebGLRenderer with `devicePixelRatio` capped at 2, delta-time animation loops, and mouse-tracked lerping.
+  2. *Unified Interlocked Storytelling:* Eliminate either/or toggles. Showcase how the Athlete App and Gym Owner Kiosk communicate in real time across 4 closed operational loops.
+  3. *Luxury Obsidian Palette:* `#050608` ultra-deep canvas, hairline borders with specular highlights (`linear-gradient`), and high-contrast Kinetic Volt (`#C6FF00`) accents.
+
+---
+
 ## 4. Known Pitfalls & Anti-Patterns to Avoid
 
 | Category | Pitfall / Anti-Pattern | Correct Practice |
