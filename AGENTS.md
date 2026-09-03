@@ -18,6 +18,8 @@
 - **Component Wireframes & Architecture:** [WIREFRAMES_AND_COMPONENTS.md](file:///e:/projects/matrix/KYNVELO/WIREFRAMES_AND_COMPONENTS.md)
 - **Design Knowledge Base:** [awesome-design-md](file:///e:/projects/matrix/KYNVELO/awesome-design-md) (Linear, Stripe, Vercel design references)
 - **Self-Improving Memory Log:** [LEARNING.md](file:///e:/projects/matrix/KYNVELO/LEARNING.md)
+- **Remote GitHub Repository:** [https://github.com/Agentx499/kynvelo](https://github.com/Agentx499/kynvelo) (Authenticated via `Agentx499`)
+- **Active Branches & Flow:** Enterprise PR Workflow (Issues #1–#11, PRs #2, #4, #6, #8, #10, #12 merged to `main`)
 - **Verification Standard:** 30-Phase Complete Web & SaaS Building Checklist (Part III of Master Reference)
 
 ---

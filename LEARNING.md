@@ -180,6 +180,17 @@ Whenever an error is encountered, a bug is fixed, or a new pattern is proven suc
 
 ---
 
+### Pattern 009: Enterprise GitHub Issue & PR Squash-Merge Protocol with Playwright MCP Verification
+- **Problem:** Dumping all changes onto `main` risks unreviewed regressions and breaks commit history hygiene.
+- **Solution:** Strict company-grade GitHub Flow:
+  1. Open a GitHub Issue for every milestone.
+  2. Implement features in a dedicated semantic branch (`feature/...`, `test/...`).
+  3. Push to remote and open PR with `Closes #...`.
+  4. Perform automated Playwright MCP browser verification with visual screenshots.
+  5. Squash-merge into `main` and delete the remote branch.
+
+---
+
 ## 4. Known Pitfalls & Anti-Patterns to Avoid
 
 | Category | Pitfall / Anti-Pattern | Correct Practice |
