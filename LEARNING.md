@@ -200,6 +200,16 @@ Whenever an error is encountered, a bug is fixed, or a new pattern is proven suc
 
 ---
 
+### Pattern 011: Decoupled Multi-Audience Portal Architecture (Consumer `/` vs Enterprise B2B `/business`)
+- **Problem:** Attempting to force both consumer lifters and B2B gym owners into a single homepage creates conflicting value propositions, confusing CTAs, and diluted conversion funnels.
+- **Solution:** Clean structural decoupling:
+  1. *Consumer Landing Page (`/`):* 100% focused on lifters, training plans, barbell plate math, two-stage AI nutrition, muscle recovery, and athlete pricing (Free vs Pro). Uses `<Barbell3DScene />`.
+  2. *Business / Gym Owner Portal (`/business` and `/for-gyms`):* 100% focused on gym founders, turnstile hardware integration, front-desk reception kiosk, No-Show Red-List retention CRM, and automated 18% GST billing. Uses `<Turnstile3DScene />`.
+  3. *Auth & Route Separation:* Athlete login (`/login`, `/signup`) routes to `/app/*`, while Gym staff terminal login (`/business/login`, `/business/signup`) routes to `/admin/*`.
+  4. *Bidirectional Navigation Switchers:* High-craft switcher links in both navigation bars (`For Gym Owners &rarr;` on consumer site, `&larr; For Athletes` on business site).
+
+---
+
 ## 4. Known Pitfalls & Anti-Patterns to Avoid
 
 | Category | Pitfall / Anti-Pattern | Correct Practice |
