@@ -113,23 +113,11 @@ export default function LoginPage() {
           </form>
         )}
 
-        {/* Demo Fast-Switch Links for Testing */}
-        <div className="mt-8 pt-6 border-t border-hairline text-center space-y-2">
-          <span className="text-[11px] font-mono text-ink-subtle block">
-            DEMO QUICK ACCESS
-          </span>
-          <div className="flex gap-2">
-            <Link href="/app/pulse" className="flex-1">
-              <Button variant="secondary" size="sm" className="w-full text-xs">
-                Athlete PWA
-              </Button>
-            </Link>
-            <Link href="/admin/terminal" className="flex-1">
-              <Button variant="secondary" size="sm" className="w-full text-xs">
-                Gym Terminal
-              </Button>
-            </Link>
-          </div>
+        {/* Business Switcher */}
+        <div className="mt-6 pt-4 border-t border-hairline text-center">
+          <Link href="/business/login" className="text-xs font-mono text-primary hover:underline flex items-center justify-center gap-1.5">
+            <span>Gym Owner or Staff Member? Go to Business Login &rarr;</span>
+          </Link>
         </div>
       </div>
 
