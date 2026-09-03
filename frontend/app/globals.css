@@ -29,46 +29,46 @@
 }
 
 :root {
-  /* Obsidian Carbon Surfaces */
-  --kynvelo-canvas: oklch(0.12 0.005 260);          /* #0D0E11 */
-  --kynvelo-surface-1: oklch(0.15 0.007 260);       /* #131518 */
-  --kynvelo-surface-2: oklch(0.18 0.009 260);       /* #191C20 */
-  --kynvelo-surface-3: oklch(0.22 0.010 260);       /* #22252A */
-  --kynvelo-surface-4: oklch(0.26 0.012 260);       /* #2B2F36 */
+  /* Linear / Raycast Ultra-Deep Luxury Obsidian Canvas */
+  --kynvelo-canvas: #050608;                        /* Ultra-deep black-obsidian */
+  --kynvelo-surface-1: #0D0E12;                     /* Primary panel surface */
+  --kynvelo-surface-2: #13151A;                     /* Secondary card surface */
+  --kynvelo-surface-3: #1A1D24;                     /* Elevated interactive surface */
+  --kynvelo-surface-4: #222630;                     /* Highlight surface */
 
-  /* Hairlines & Precision Borders */
-  --kynvelo-hairline: oklch(0.24 0.010 260);        /* #24272D */
-  --kynvelo-hairline-strong: oklch(0.32 0.012 260); /* #373C45 */
-  --kynvelo-hairline-hover: oklch(0.42 0.015 260);  /* #4E5562 */
+  /* Hairlines & Precision Specular Borders */
+  --kynvelo-hairline: rgba(255, 255, 255, 0.08);    /* Subtle boundary */
+  --kynvelo-hairline-strong: rgba(255, 255, 255, 0.16);
+  --kynvelo-hairline-hover: rgba(255, 255, 255, 0.28);
 
   /* Primary Brand: Kinetic Volt */
-  --kynvelo-primary: oklch(0.85 0.20 135);          /* #C6FF00 */
-  --kynvelo-primary-hover: oklch(0.88 0.22 135);    /* #D2FF1A */
-  --kynvelo-primary-active: oklch(0.80 0.18 135);   /* #B4E600 */
-  --kynvelo-primary-dim: oklch(0.85 0.20 135 / 0.15);
-  --kynvelo-on-primary: oklch(0.12 0.005 260);      /* #0D0E11 */
+  --kynvelo-primary: #C6FF00;
+  --kynvelo-primary-hover: #D4FF26;
+  --kynvelo-primary-active: #B2E600;
+  --kynvelo-primary-dim: rgba(198, 255, 0, 0.12);
+  --kynvelo-on-primary: #050608;
 
   /* Inks & Text */
-  --kynvelo-ink: oklch(0.98 0 0);                   /* #F9F9F9 */
-  --kynvelo-ink-muted: oklch(0.72 0.015 260);       /* #B0B5BE */
-  --kynvelo-ink-subtle: oklch(0.52 0.018 260);      /* #7A818E */
+  --kynvelo-ink: #F7F8F8;
+  --kynvelo-ink-muted: #B4B9C4;
+  --kynvelo-ink-subtle: #737A88;
 
   /* Semantics */
-  --kynvelo-success: oklch(0.75 0.18 145);
-  --kynvelo-warning: oklch(0.78 0.18 70);
-  --kynvelo-danger: oklch(0.65 0.22 25);
-  --kynvelo-info: oklch(0.75 0.16 220);
+  --kynvelo-success: #10B981;
+  --kynvelo-warning: #F59E0B;
+  --kynvelo-danger: #EF4444;
+  --kynvelo-info: #00F0FF;
 
   /* Macros */
-  --kynvelo-macro-protein: oklch(0.75 0.18 220);
-  --kynvelo-macro-carbs: oklch(0.82 0.18 75);
-  --kynvelo-macro-fat: oklch(0.72 0.20 25);
+  --kynvelo-macro-protein: #00F0FF;
+  --kynvelo-macro-carbs: #F59E0B;
+  --kynvelo-macro-fat: #EF4444;
 }
 
 /* Dynamic White-Label Overrides */
 [data-tenant="olympic-gym"] {
-  --kynvelo-primary: oklch(0.75 0.18 220);
-  --kynvelo-primary-hover: oklch(0.80 0.20 220);
+  --kynvelo-primary: #00F0FF;
+  --kynvelo-primary-hover: #26F4FF;
 }
 
 body {
@@ -77,6 +77,40 @@ body {
   font-family: var(--font-sans);
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
+  background-image: 
+    radial-gradient(circle at 50% -20%, rgba(198, 255, 0, 0.08), transparent 45%),
+    radial-gradient(circle at 100% 40%, rgba(0, 240, 255, 0.04), transparent 40%),
+    radial-gradient(circle at 0% 80%, rgba(198, 255, 0, 0.03), transparent 40%);
+  background-attachment: fixed;
+}
+
+/* Luxury Glass Specular Layer */
+.glass-panel {
+  background: linear-gradient(180deg, rgba(20, 22, 28, 0.75) 0%, rgba(13, 14, 18, 0.85) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.12),
+    0 20px 40px -15px rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(16px);
+}
+
+.glass-panel-elevated {
+  background: linear-gradient(180deg, rgba(26, 29, 36, 0.85) 0%, rgba(17, 19, 24, 0.95) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.18),
+    0 25px 50px -12px rgba(0, 0, 0, 0.8),
+    0 0 30px rgba(198, 255, 0, 0.05);
+  backdrop-filter: blur(20px);
+}
+
+/* Kinetic Glows */
+.glow-volt {
+  box-shadow: 0 0 25px -5px rgba(198, 255, 0, 0.4);
+}
+
+.glow-cyan {
+  box-shadow: 0 0 25px -5px rgba(0, 240, 255, 0.4);
 }
 
 /* Custom Scrollbar for Flight-Deck Aesthetic */
@@ -86,14 +120,14 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--kynvelo-canvas);
+  background: #050608;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--kynvelo-hairline-strong);
+  background: #222630;
   border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--kynvelo-hairline-hover);
+  background: #343B4A;
 }

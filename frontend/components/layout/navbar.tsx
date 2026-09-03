@@ -2,68 +2,80 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
-import { Menu, X, ArrowRight } from "lucide-react";
+import { Menu, X, ArrowRight, ShieldCheck, Dumbbell, Building2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { AudienceToggle, type AudienceMode } from "@/components/blocks/audience-toggle";
+import { KynveloLogo } from "@/components/ui/kynvelo-logo";
 
-interface NavbarProps {
-  mode: AudienceMode;
-  onModeChange: (mode: AudienceMode) => void;
-}
-
-export function Navbar({ mode, onModeChange }: NavbarProps) {
+export function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-hairline bg-canvas/80 backdrop-blur-md">
+    <header className="sticky top-0 z-50 w-full border-b border-white/[0.08] bg-[#050608]/85 backdrop-blur-xl transition-all">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
-        {/* Left: Brand Monogram & Wordmark */}
-        <Link href="/" className="flex items-center gap-2.5 shrink-0 group">
-          <div className="relative w-8 h-8 rounded-lg overflow-hidden border border-hairline shadow-[0_0_15px_rgba(198,255,0,0.15)] group-hover:border-primary/50 transition-colors">
-            <Image
-              src="/logo.svg"
-              alt="Kynvelo"
-              fill
-              className="object-contain p-0.5"
-            />
-          </div>
-          <span className="font-mono text-base font-extrabold tracking-wider text-ink">
-            KYNVELO
-          </span>
+        {/* Left: Brand Vector Logo & Wordmark */}
+        <Link href="/" className="group">
+          <KynveloLogo size="sm" />
         </Link>
 
-        {/* Center: Dual-Audience Mode Toggle */}
-        <div className="hidden lg:flex items-center">
-          <AudienceToggle mode={mode} onModeChange={onModeChange} />
-        </div>
-
-        {/* Desktop Nav Links */}
-        <nav className="hidden md:flex items-center gap-6 text-xs sm:text-sm font-medium text-ink-muted">
-          <Link href="#features" className="hover:text-ink transition-colors">
-            Features
+        {/* Center: Desktop Navigation Links */}
+        <nav className="hidden lg:flex items-center gap-7 text-xs font-mono uppercase tracking-wider text-ink-muted">
+          <Link
+            href="#loops"
+            className="hover:text-ink transition-colors hover:text-primary"
+          >
+            The 4 Loops
           </Link>
-          <Link href="/roi-calculator" className="hover:text-ink transition-colors">
-            ROI Calculator
+          <Link
+            href="#athletes"
+            className="hover:text-ink transition-colors flex items-center gap-1.5 hover:text-primary"
+          >
+            <Dumbbell className="w-3.5 h-3.5 text-primary" /> For Lifters
           </Link>
-          <Link href="/pricing" className="hover:text-ink transition-colors">
+          <Link
+            href="#gym-owners"
+            className="hover:text-ink transition-colors flex items-center gap-1.5 hover:text-primary"
+          >
+            <Building2 className="w-3.5 h-3.5 text-primary" /> For Gym Owners
+          </Link>
+          <Link
+            href="#pricing"
+            className="hover:text-ink transition-colors hover:text-primary"
+          >
             Pricing
           </Link>
-          <Link href="/enterprise" className="hover:text-ink transition-colors">
-            Enterprise
+          <Link
+            href="/roi-calculator"
+            className="hover:text-ink transition-colors hover:text-primary"
+          >
+            ROI Calculator
+          </Link>
+          <Link
+            href="/enterprise"
+            className="hover:text-ink transition-colors hover:text-primary"
+          >
+            Hardware Specs
           </Link>
         </nav>
 
         {/* Right CTAs */}
-        <div className="hidden sm:flex items-center gap-3">
+        <div className="hidden sm:flex items-center gap-3 font-mono text-xs">
           <Link href="/login">
-            <Button variant="ghost" size="sm">
+            <Button
+              variant="ghost"
+              size="sm"
+              className="text-xs text-ink-muted hover:text-ink"
+            >
               Sign In
             </Button>
           </Link>
+
           <Link href="/signup">
-            <Button variant="primary" size="sm" className="gap-1">
-              <span>{mode === "athlete" ? "Start Free" : "Free Gym Trial"}</span>
+            <Button
+              variant="primary"
+              size="sm"
+              className="text-xs font-bold gap-1.5 shadow-[0_0_20px_rgba(198,255,0,0.25)]"
+            >
+              <span>Get Started</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </Button>
           </Link>
@@ -73,58 +85,69 @@ export function Navbar({ mode, onModeChange }: NavbarProps) {
         <button
           type="button"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          className="md:hidden p-2 text-ink-muted hover:text-ink cursor-pointer"
-          aria-label="Toggle menu"
+          className="lg:hidden p-2 rounded-lg text-ink-muted hover:text-ink hover:bg-surface-2 transition-colors cursor-pointer"
         >
-          {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
         </button>
       </div>
 
-      {/* Mobile Menu Dropdown */}
+      {/* Mobile Drawer */}
       {mobileMenuOpen && (
-        <div className="md:hidden border-t border-hairline bg-surface-1 p-4 space-y-4">
-          <div className="flex justify-center pb-2">
-            <AudienceToggle mode={mode} onModeChange={onModeChange} />
-          </div>
-          <div className="flex flex-col gap-2 font-medium text-sm">
+        <div className="lg:hidden border-b border-hairline bg-surface-1/95 backdrop-blur-2xl px-5 py-6 space-y-4 font-mono text-sm animate-in slide-in-from-top-2">
+          <div className="flex flex-col space-y-3">
             <Link
-              href="#features"
+              href="#loops"
               onClick={() => setMobileMenuOpen(false)}
-              className="px-3 py-2 rounded-lg text-ink-muted hover:text-ink hover:bg-surface-2"
+              className="text-ink-muted hover:text-primary transition-colors py-1"
             >
-              Features
+              ● The 4 Interconnected Loops
+            </Link>
+            <Link
+              href="#athletes"
+              onClick={() => setMobileMenuOpen(false)}
+              className="text-ink-muted hover:text-primary transition-colors py-1 flex items-center gap-2"
+            >
+              <Dumbbell className="w-4 h-4 text-primary" /> For Lifters & Athletes
+            </Link>
+            <Link
+              href="#gym-owners"
+              onClick={() => setMobileMenuOpen(false)}
+              className="text-ink-muted hover:text-primary transition-colors py-1 flex items-center gap-2"
+            >
+              <Building2 className="w-4 h-4 text-primary" /> For Gym Owners & Clubs
+            </Link>
+            <Link
+              href="#pricing"
+              onClick={() => setMobileMenuOpen(false)}
+              className="text-ink-muted hover:text-primary transition-colors py-1"
+            >
+              ● Pricing (Athletes & Gyms)
             </Link>
             <Link
               href="/roi-calculator"
               onClick={() => setMobileMenuOpen(false)}
-              className="px-3 py-2 rounded-lg text-ink-muted hover:text-ink hover:bg-surface-2"
+              className="text-ink-muted hover:text-primary transition-colors py-1"
             >
-              ROI Calculator
-            </Link>
-            <Link
-              href="/pricing"
-              onClick={() => setMobileMenuOpen(false)}
-              className="px-3 py-2 rounded-lg text-ink-muted hover:text-ink hover:bg-surface-2"
-            >
-              Pricing
+              ● Churn ROI Calculator
             </Link>
             <Link
               href="/enterprise"
               onClick={() => setMobileMenuOpen(false)}
-              className="px-3 py-2 rounded-lg text-ink-muted hover:text-ink hover:bg-surface-2"
+              className="text-ink-muted hover:text-primary transition-colors py-1"
             >
-              Enterprise Hardware
+              ● Hardware & Turnstile Specs
             </Link>
           </div>
-          <div className="flex gap-2 pt-2 border-t border-hairline">
-            <Link href="/login" className="flex-1">
-              <Button variant="outline" className="w-full">
-                Sign In
+
+          <div className="pt-4 border-t border-hairline flex flex-col gap-2">
+            <Link href="/login" onClick={() => setMobileMenuOpen(false)}>
+              <Button variant="outline" className="w-full text-xs">
+                Member / Staff Sign In
               </Button>
             </Link>
-            <Link href="/signup" className="flex-1">
-              <Button variant="primary" className="w-full">
-                Get Started
+            <Link href="/signup" onClick={() => setMobileMenuOpen(false)}>
+              <Button variant="primary" className="w-full text-xs font-bold">
+                Deploy Kynvelo Now
               </Button>
             </Link>
           </div>
