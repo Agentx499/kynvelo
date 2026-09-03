@@ -19,11 +19,9 @@ import { Badge } from "@/components/ui/badge";
 import { type AudienceMode } from "@/components/blocks/audience-toggle";
 
 export default function EnterprisePage() {
-  const [mode, setMode] = useState<AudienceMode>("owner");
-
   return (
     <div className="min-h-screen flex flex-col bg-canvas text-ink">
-      <Navbar mode={mode} onModeChange={setMode} />
+      <Navbar />
 
       <main className="flex-1 py-16 sm:py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

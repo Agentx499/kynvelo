@@ -1,7 +1,7 @@
 import React from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { ShieldCheck, Heart } from "lucide-react";
+import { KynveloLogo } from "@/components/ui/kynvelo-logo";
 
 export function Footer() {
   return (
@@ -10,18 +10,8 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-5 gap-10">
           {/* Col 1: Brand & Identity (2 cols) */}
           <div className="md:col-span-2 space-y-4">
-            <Link href="/" className="flex items-center gap-2.5">
-              <div className="relative w-8 h-8 rounded-lg overflow-hidden border border-hairline shadow-sm">
-                <Image
-                  src="/logo.svg"
-                  alt="Kynvelo"
-                  fill
-                  className="object-contain p-0.5"
-                />
-              </div>
-              <span className="font-mono text-base font-extrabold tracking-wider text-ink">
-                KYNVELO
-              </span>
+            <Link href="/" className="inline-block">
+              <KynveloLogo size="sm" />
             </Link>
 
             <p className="text-sm text-ink-muted leading-relaxed max-w-sm">
