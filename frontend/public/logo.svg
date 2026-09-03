@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" fill="none">
+  <!-- Kynvelo Kinetic Volt & Obsidian Monogram Logo -->
+  <rect width="120" height="120" rx="24" fill="#0D0E11"/>
+  <!-- Structural Anchor Bar -->
+  <rect x="26" y="24" width="14" height="72" rx="3" fill="#F9F9F9"/>
+  <!-- Top Kinetic Velocity Blade -->
+  <path d="M46 60L78 28H100L62 66L46 60Z" fill="#C6FF00"/>
+  <!-- Bottom Kinetic Velocity Blade -->
+  <path d="M46 66L64 60L100 96H78L46 66Z" fill="#C6FF00"/>
+</svg>

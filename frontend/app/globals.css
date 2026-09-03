@@ -1,0 +1,99 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-canvas: var(--kynvelo-canvas);
+  --color-surface-1: var(--kynvelo-surface-1);
+  --color-surface-2: var(--kynvelo-surface-2);
+  --color-surface-3: var(--kynvelo-surface-3);
+  --color-surface-4: var(--kynvelo-surface-4);
+  --color-hairline: var(--kynvelo-hairline);
+  --color-hairline-strong: var(--kynvelo-hairline-strong);
+  --color-hairline-hover: var(--kynvelo-hairline-hover);
+  --color-primary: var(--kynvelo-primary);
+  --color-primary-hover: var(--kynvelo-primary-hover);
+  --color-primary-active: var(--kynvelo-primary-active);
+  --color-primary-dim: var(--kynvelo-primary-dim);
+  --color-on-primary: var(--kynvelo-on-primary);
+  --color-ink: var(--kynvelo-ink);
+  --color-ink-muted: var(--kynvelo-ink-muted);
+  --color-ink-subtle: var(--kynvelo-ink-subtle);
+  --color-success: var(--kynvelo-success);
+  --color-warning: var(--kynvelo-warning);
+  --color-danger: var(--kynvelo-danger);
+  --color-info: var(--kynvelo-info);
+  --color-macro-protein: var(--kynvelo-macro-protein);
+  --color-macro-carbs: var(--kynvelo-macro-carbs);
+  --color-macro-fat: var(--kynvelo-macro-fat);
+  --font-sans: var(--font-jakarta), system-ui, -apple-system, sans-serif;
+  --font-mono: var(--font-jetbrains), monospace;
+}
+
+:root {
+  /* Obsidian Carbon Surfaces */
+  --kynvelo-canvas: oklch(0.12 0.005 260);          /* #0D0E11 */
+  --kynvelo-surface-1: oklch(0.15 0.007 260);       /* #131518 */
+  --kynvelo-surface-2: oklch(0.18 0.009 260);       /* #191C20 */
+  --kynvelo-surface-3: oklch(0.22 0.010 260);       /* #22252A */
+  --kynvelo-surface-4: oklch(0.26 0.012 260);       /* #2B2F36 */
+
+  /* Hairlines & Precision Borders */
+  --kynvelo-hairline: oklch(0.24 0.010 260);        /* #24272D */
+  --kynvelo-hairline-strong: oklch(0.32 0.012 260); /* #373C45 */
+  --kynvelo-hairline-hover: oklch(0.42 0.015 260);  /* #4E5562 */
+
+  /* Primary Brand: Kinetic Volt */
+  --kynvelo-primary: oklch(0.85 0.20 135);          /* #C6FF00 */
+  --kynvelo-primary-hover: oklch(0.88 0.22 135);    /* #D2FF1A */
+  --kynvelo-primary-active: oklch(0.80 0.18 135);   /* #B4E600 */
+  --kynvelo-primary-dim: oklch(0.85 0.20 135 / 0.15);
+  --kynvelo-on-primary: oklch(0.12 0.005 260);      /* #0D0E11 */
+
+  /* Inks & Text */
+  --kynvelo-ink: oklch(0.98 0 0);                   /* #F9F9F9 */
+  --kynvelo-ink-muted: oklch(0.72 0.015 260);       /* #B0B5BE */
+  --kynvelo-ink-subtle: oklch(0.52 0.018 260);      /* #7A818E */
+
+  /* Semantics */
+  --kynvelo-success: oklch(0.75 0.18 145);
+  --kynvelo-warning: oklch(0.78 0.18 70);
+  --kynvelo-danger: oklch(0.65 0.22 25);
+  --kynvelo-info: oklch(0.75 0.16 220);
+
+  /* Macros */
+  --kynvelo-macro-protein: oklch(0.75 0.18 220);
+  --kynvelo-macro-carbs: oklch(0.82 0.18 75);
+  --kynvelo-macro-fat: oklch(0.72 0.20 25);
+}
+
+/* Dynamic White-Label Overrides */
+[data-tenant="olympic-gym"] {
+  --kynvelo-primary: oklch(0.75 0.18 220);
+  --kynvelo-primary-hover: oklch(0.80 0.20 220);
+}
+
+body {
+  background-color: var(--kynvelo-canvas);
+  color: var(--kynvelo-ink);
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Custom Scrollbar for Flight-Deck Aesthetic */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--kynvelo-canvas);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--kynvelo-hairline-strong);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--kynvelo-hairline-hover);
+}
