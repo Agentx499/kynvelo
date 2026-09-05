@@ -110,9 +110,13 @@ This guarantees that B2C and B2B users run on the **exact same codebase, databas
 ## 5. Pricing Structure
 
 ### 5.1 Kynvelo Direct (B2C)
-- **Free (₹0):** Manual food/workout logging, 1 active goal, 7-day history.
-- **Starter (₹99/mo | ₹899/yr):** Full logging, barcode scanning, unlimited history, streaks.
-- **Pro (₹299/mo | ₹2,499/yr):** AI photo food scan, advanced macro/PR analytics, workout plan builder, data export.
+- **Free (₹0):** Unlimited workout logging, Olympic plate calculator, personal records & 1RM estimates, muscle recovery heatmap, 1 active goal, 7-day nutrition history, gym check-in pass.
+- **Starter (₹99/mo | ₹899/yr):** Adds barcode scanning, unlimited nutrition history, streaks, hydration & quick-add logging, steps & cardio sessions.
+- **Pro (₹299/mo | ₹2,499/yr):** Adds AI photo food scan, macro/micronutrient/PR analytics, TDEE & readiness scoring, transformation photo vault, workout plan builder, data export.
+
+> **Free tier scope widened 2026-09-04.** Free previously covered only manual logging, 1 active goal and 7-day history. The plate calculator, personal records, 1RM estimation and the recovery heatmap are pure client-side arithmetic with no marginal serving cost, and they are the strongest adoption driver available. Gating them bought nothing. Implemented in `frontend/lib/pricing.ts` → `ATHLETE_TIERS`, which is the single source of truth every pricing surface reads.
+>
+> **Tier names are Free / Starter / Pro.** There is no "Elite" tier; that name appeared only in WIREFRAMES_AND_COMPONENTS.md and has been corrected.
 
 ### 5.2 Kynvelo for Gyms (B2B)
 - **Starter (₹2,999/mo | ₹28,999/yr):** Up to 100 members. Core, Pulse, Guard, Flow, Pay modules.
@@ -124,9 +128,13 @@ This guarantees that B2C and B2B users run on the **exact same codebase, databas
 - **Setup Fee:** One-time onboarding fee (₹5,000–₹15,000, waived on annual prepay) for branding setup, staff training, and member data migration. *Lifetime one-time subscriptions are strictly prohibited.*
 
 ### 5.3 Referral Program
-- **Commission:** 20% recurring share of base plan fees for up to 6 months.
-- **Caps:** ₹10,000 maximum payout per referred gym; payout ceases once 6 months or ₹10,000 is reached.
-- **Attribution:** 6-character referral code with a 7-day post-signup self-service grace period.
+- **Commission:** 20% recurring share of base plan fees for up to 6 months. Calculated on the base plan fee only — capacity blocks, setup fees and GST are excluded.
+- **Caps:** ₹10,000 maximum payout per referred gym; payout ceases once 6 months or ₹10,000 is reached, whichever comes first.
+- **Minimum payout:** ₹1,000. Balances below this roll into the following month until they clear the threshold, so bank transfer fees do not consume the payment. *(Added 2026-09-04; previously implemented in the frontend without a spec entry.)*
+- **Accrual condition:** commission accrues for a month only once the referred gym's payment for that month has cleared. Kynvelo does not pay out on revenue it has not collected.
+- **Attribution:** 6-character referral code with a 7-day post-signup self-service grace period. The code entered at signup wins; no split attribution, no last-touch override. Self-referrals do not qualify.
+
+> **These are the authoritative terms.** FEATURES.md 8.1, SCREENS.md page 82 and WIREFRAMES_AND_COMPONENTS.md previously stated "₹10,000 per gym per month for 10 months", which is ~17× higher and exceeds the entire Starter plan fee. All three have been corrected to match this section.
 
 ---
 

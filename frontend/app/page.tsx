@@ -1,541 +1,534 @@
-"use client";
-
-import React, { useState } from "react";
+import type { Metadata } from "next";
 import Link from "next/link";
+import { SiteHeader } from "@/components/layout/site-header";
+import { SiteFooter } from "@/components/layout/site-footer";
+import { LiveSetMatrix } from "@/components/marketing/live-set-matrix";
+import { NutritionMethods } from "@/components/marketing/nutrition-methods";
+import { MacroRings } from "@/components/marketing/macro-rings";
+import { RecoveryBody } from "@/components/marketing/recovery-body";
 import {
-  Dumbbell,
-  ArrowRight,
-  ShieldCheck,
-  Zap,
-  Camera,
-  Activity,
-  QrCode,
-  CheckCircle2,
-  Sparkles,
-  Award,
-  Check,
-  Building2,
-} from "lucide-react";
-import { ConsumerNavbar } from "@/components/layout/consumer-navbar";
-import { Barbell3DScene } from "@/components/3d/barbell-3d-scene";
-import { Footer } from "@/components/layout/footer";
+  StreakGrid,
+  TransformationSlider,
+} from "@/components/marketing/transformation-slider";
+import { TdeeWidget } from "@/components/marketing/tdee-widget";
+import { AthletePlans } from "@/components/marketing/athlete-plans";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { formatCurrency } from "@/lib/utils";
+import {
+  Display,
+  Figure,
+  Lede,
+  Panel,
+  Section,
+  SectionHead,
+  Shell,
+  V,
+} from "@/components/ui/section";
 
-export default function ConsumerHomePage() {
-  const [demoWeight, setDemoWeight] = useState(82.5);
-  const [isAnnual, setIsAnnual] = useState(true);
+export const metadata: Metadata = {
+  title: "Train with precision. Fuel with science.",
+  description:
+    "Log every set, get the plate math right, and scan meals against USDA data instead of guessed calories. Free forever for logging. Works with or without a gym.",
+  alternates: { canonical: "/" },
+};
 
-  // Barbell plate math
-  const calculatePlates = (totalWeight: number) => {
-    let perSide = (totalWeight - 20) / 2;
-    if (perSide < 0) return [];
-    const availablePlates = [25, 20, 15, 10, 5, 2.5, 1.25];
-    const platesUsed: { plate: number; count: number }[] = [];
+/* Athlete landing page.
 
-    for (const p of availablePlates) {
-      const count = Math.floor(perSide / p);
-      if (count > 0) {
-        platesUsed.push({ plate: p, count });
-        perSide -= count * p;
-      }
-    }
-    return platesUsed;
-  };
+   This is now a server component. v1 was "use client" end to end, which meant
+   the page could not export metadata and all nine marketing pages shared one
+   title and description from layout.tsx. Interactivity is isolated to
+   <AthletePlans /> and <Barbell3DScene />.
 
+   Structure: one claim per section. v1 opened with a hero, a four-across
+   animated stat ticker, then five sections that each looked identical - a volt
+   Badge kicker over a grid of glass cards. Nothing established rank, so
+   everything read at the same volume. */
+export default function AthleteHomePage() {
   return (
-    <div className="min-h-screen flex flex-col bg-[#050608] text-ink overflow-x-hidden selection:bg-primary selection:text-black">
-      <ConsumerNavbar />
+    <>
+      <SiteHeader audience="athlete" />
 
-      <main className="flex-1">
-        {/* ========================================================================= */}
-        {/* 1. CONSUMER ATHLETE HERO                                                  */}
-        {/* ========================================================================= */}
-        <section className="relative pt-16 pb-20 overflow-hidden">
-          {/* Luminous Glow */}
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-gradient-to-b from-primary/15 via-cyan-400/5 to-transparent blur-[140px] pointer-events-none -z-10" />
+      <main id="main">
+        {/* ---------------------------------------------------------------
+            HERO
+            Asymmetric 7/5 split. No stat ticker: four animated counters
+            under a headline is the hero-metric template, and the numbers
+            there were unverifiable anyway.
+            --------------------------------------------------------------- */}
+        <Shell className="py-16 sm:py-24">
+          <div className="grid gap-14 lg:grid-cols-12 lg:items-center lg:gap-12">
+            <div className="space-y-8 lg:col-span-6">
+              <Display as="h1" size="lg">
+                Train with precision.
+                <br />
+                Fuel with <V>science</V>.
+              </Display>
 
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12 text-center">
-            {/* Top Pill */}
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-surface-1 border border-white/10 text-xs font-mono text-ink shadow-[0_0_20px_rgba(198,255,0,0.1)]">
-              <span className="w-2 h-2 rounded-full bg-primary animate-ping" />
-              <span className="text-primary font-bold">ATHLETE FLIGHT-DECK</span>
-              <span className="text-white/20">|</span>
-              <span className="text-ink-subtle">
-                Always 100% Free Core Strength Tracking
+              <Lede>
+                Log every set with the weight you actually lifted, get the plate
+                math right under fatigue, and scan a meal against the USDA
+                database instead of a number an AI guessed.
+              </Lede>
+
+              <div className="flex flex-wrap gap-3">
+                <Button asChild variant="primary" size="lg">
+                  <Link href="/signup">Start free</Link>
+                </Button>
+                <Button asChild variant="secondary" size="lg">
+                  <Link href="/pricing">See pricing</Link>
+                </Button>
+              </div>
+
+              <p className="text-[14px] text-ink-subtle">
+                Free forever for logging. Works whether or not your gym uses
+                Kynvelo.
+              </p>
+            </div>
+
+            <div className="lg:col-span-6">
+              <LiveSetMatrix />
+            </div>
+          </div>
+        </Shell>
+
+        {/* ---------------------------------------------------------------
+            REPLACES
+            The honest competitive claim, stated plainly.
+            --------------------------------------------------------------- */}
+        <Section size="sm">
+          <div className="grid gap-10 lg:grid-cols-12 lg:items-center">
+            <div className="lg:col-span-5">
+              <Display size="sm">
+                One app instead of <V>three subscriptions</V>.
+              </Display>
+            </div>
+            <div className="lg:col-span-7">
+              <Lede>
+                Most lifters run a workout logger, a calorie tracker and a step
+                counter, and pay for two of them. Kynvelo does all three, and
+                the logging half is free permanently — not a trial.
+              </Lede>
+            </div>
+          </div>
+        </Section>
+
+        {/* ---------------------------------------------------------------
+            TRAINING
+            --------------------------------------------------------------- */}
+        <Section id="training">
+          <SectionHead
+            title={
+              <>
+                The barbell doesn&apos;t care
+                <br />
+                what you <V>meant</V> to lift.
+              </>
+            }
+            aside={
+              <Lede>
+                Kynvelo pre-fills last session&apos;s numbers, tells you the
+                target that beats them, and shows the exact plates for the bar
+                in front of you.
+              </Lede>
+            }
+          />
+
+          {/* Set matrix as real product imagery, not an icon card. */}
+          <Panel className="mt-14 overflow-hidden">
+            <div className="flex items-baseline justify-between gap-4 border-b border-line px-5 py-4 sm:px-6">
+              <h3 className="font-display text-lg font-semibold text-ink">
+                Barbell Back Squat
+              </h3>
+              <span className="text-[13px] text-ink-subtle">
+                Last week: 80 kg × 8
               </span>
             </div>
 
-            {/* Main Headline */}
-            <div className="max-w-4xl mx-auto space-y-5">
-              <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-[-0.03em] text-ink leading-[1.05]">
-                Train with Absolute Precision. <br />
-                <span className="bg-gradient-to-r from-primary via-[#E0FF66] to-[#00F0FF] bg-clip-text text-transparent">
-                  Zero Paywalls on Core Tracking.
-                </span>
-              </h1>
-              <p className="text-base sm:text-lg lg:text-xl text-ink-muted max-w-2xl mx-auto leading-relaxed">
-                Olympic barbell plate math, two-stage verified AI macro scanning, and a 15-second dynamic turnstile pass directly on your phone. No predatory $99/year paywalls.
-              </p>
-            </div>
+            <table className="w-full text-left">
+              <caption className="sr-only">
+                Working sets for barbell back squat, showing previous
+                performance and today&apos;s logged sets
+              </caption>
+              <thead>
+                <tr className="border-b border-line text-[12px] uppercase tracking-wider text-ink-subtle">
+                  <th scope="col" className="px-5 py-2.5 font-medium sm:px-6">
+                    Set
+                  </th>
+                  <th scope="col" className="px-3 py-2.5 font-medium">
+                    Previous
+                  </th>
+                  <th scope="col" className="px-3 py-2.5 font-medium">
+                    Weight
+                  </th>
+                  <th scope="col" className="px-3 py-2.5 font-medium">
+                    Reps
+                  </th>
+                  <th scope="col" className="px-5 py-2.5 font-medium sm:px-6">
+                    Plates / side
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="tnum text-[15px]">
+                {[
+                  { set: 1, prev: "60 × 8", w: "60.0", r: 8, plates: "20", done: true },
+                  { set: 2, prev: "80 × 8", w: "80.0", r: 8, plates: "25 + 5", done: true },
+                  { set: 3, prev: "80 × 8", w: "82.5", r: 8, plates: "25 + 5 + 1.25", done: true, pr: true },
+                  { set: 4, prev: "80 × 6", w: "82.5", r: "—", plates: "25 + 5 + 1.25", done: false },
+                ].map((row) => (
+                  <tr key={row.set} className="border-b border-line last:border-0">
+                    <th
+                      scope="row"
+                      className="px-5 py-3.5 font-normal text-ink-subtle sm:px-6"
+                    >
+                      {row.set}
+                    </th>
+                    <td className="px-3 py-3.5 text-ink-subtle">{row.prev}</td>
+                    <td className="px-3 py-3.5 text-ink">{row.w}</td>
+                    <td className="px-3 py-3.5 text-ink">{row.r}</td>
+                    <td className="px-5 py-3.5 sm:px-6">
+                      <span className="text-ink-muted">{row.plates}</span>
+                      {row.pr && (
+                        <span className="ml-2.5 text-[13px] text-primary">
+                          PR
+                        </span>
+                      )}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
 
-            {/* Primary CTAs */}
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 font-mono text-xs">
-              <Link href="/signup">
-                <Button
-                  size="lg"
-                  variant="primary"
-                  className="w-full sm:w-auto px-8 py-6 text-sm font-bold gap-2.5 shadow-[0_0_30px_rgba(198,255,0,0.3)]"
-                >
-                  <Dumbbell className="w-4 h-4 text-black fill-black" />
-                  <span>Start Free Training</span>
-                  <ArrowRight className="w-4 h-4 text-black" />
-                </Button>
-              </Link>
-
-              <Link href="/app/pulse">
-                <Button
-                  size="lg"
-                  variant="secondary"
-                  className="w-full sm:w-auto px-8 py-6 text-sm font-bold gap-2.5 glass-panel border border-white/10 hover:border-white/20"
-                >
-                  <span>Launch Web App</span>
-                </Button>
-              </Link>
+            <div className="border-t border-line px-5 py-4 text-[14px] text-ink-muted sm:px-6">
+              Checking a set starts the rest timer and writes the timestamp.
+              Nothing to tap twice.
             </div>
+          </Panel>
 
-            {/* Athlete Telemetry Ticker */}
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 max-w-4xl mx-auto pt-6 text-left font-mono">
-              <div className="glass-panel p-4 rounded-2xl border border-white/[0.08]">
-                <span className="text-[10px] text-ink-subtle uppercase block">
-                  SETS LOGGED
-                </span>
-                <span className="text-xl sm:text-2xl font-bold text-ink block mt-0.5">
-                  38,400+
-                </span>
-                <span className="text-[10px] text-emerald-400">● 100% Verified Tonnage</span>
-              </div>
-              <div className="glass-panel p-4 rounded-2xl border border-white/[0.08]">
-                <span className="text-[10px] text-ink-subtle uppercase block">
-                  PRECISION LOADING
-                </span>
-                <span className="text-xl sm:text-2xl font-bold text-primary block mt-0.5">
-                  0.5 kg
-                </span>
-                <span className="text-[10px] text-ink-subtle">Micro-plate Compatible</span>
-              </div>
-              <div className="glass-panel p-4 rounded-2xl border border-white/[0.08]">
-                <span className="text-[10px] text-ink-subtle uppercase block">
-                  AI NUTRITION VERIFIED
-                </span>
-                <span className="text-xl sm:text-2xl font-bold text-ink block mt-0.5">
-                  USDA
-                </span>
-                <span className="text-[10px] text-cyan-400">● FoodData Central Sync</span>
-              </div>
-              <div className="glass-panel p-4 rounded-2xl border border-white/[0.08]">
-                <span className="text-[10px] text-ink-subtle uppercase block">
-                  COMMERCIAL PRIVACY
-                </span>
-                <span className="text-xl sm:text-2xl font-bold text-ink block mt-0.5">
-                  0 Ads
-                </span>
-                <span className="text-[10px] text-ink-subtle">DPDP Data Ownership</span>
-              </div>
-            </div>
-
-            {/* 3D Interactive Olympic Barbell */}
-            <div className="pt-6">
-              <Barbell3DScene />
-            </div>
+          <div className="mt-14 grid gap-x-10 gap-y-8 sm:grid-cols-3">
+            <Figure value="400+" label="Exercises with execution cues and muscle mapping" />
+            <Figure value="Brzycki" label="1RM estimation, with an RPE percentage table" />
+            <Figure value="72 h" label="Recovery window used to score muscle readiness" />
           </div>
-        </section>
+        </Section>
 
-        {/* ========================================================================= */}
-        {/* 2. BARBELL PLATE MATH & STRENGTH TRACKING                                 */}
-        {/* ========================================================================= */}
-        <section id="workouts" className="py-24 relative overflow-hidden border-t border-white/[0.08]">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
-            <div className="max-w-3xl space-y-3">
-              <Badge variant="primary" className="font-mono text-[11px] px-3 py-1">
-                MODULE 01: PROGRESSIVE OVERLOAD
-              </Badge>
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-ink tracking-tight">
-                Olympic Barbell Plate Math. <br />
-                <span className="text-primary font-mono">Never Guess the Loading Rack Again.</span>
-              </h2>
-              <p className="text-sm sm:text-base text-ink-muted leading-relaxed">
-                Set your target weight and Kynvelo immediately computes the exact sleeve loading per side (accounting for standard 20kg Olympic barbells and micro-plates).
-              </p>
-            </div>
+        {/* ---------------------------------------------------------------
+            NUTRITION
+            The two-stage architecture is the differentiator, so it gets an
+            ordered list. Numbers here are a genuine sequence, not decorative
+            section markers.
+            --------------------------------------------------------------- */}
+        <Section id="nutrition">
+          <SectionHead
+            title={
+              <>
+                Your calorie tracker
+                <br />
+                shouldn&apos;t <V>guess</V>.
+              </>
+            }
+            lede="Ask an AI how many calories are on a plate and it will invent a confident number. Kynvelo splits the job in two so it can't."
+          />
 
-            <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-stretch">
-              <div className="md:col-span-7 glass-panel-elevated p-8 rounded-3xl space-y-6 border border-white/10">
-                <h3 className="text-xl font-bold text-ink">Interactive Plate Math Simulator</h3>
-
-                <div className="p-5 rounded-2xl bg-surface-1 border border-hairline space-y-4 font-mono text-xs">
-                  <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-3">
-                    <span className="text-ink-subtle">SELECT TARGET WEIGHT:</span>
-                    <div className="flex items-center gap-2">
-                      {[60, 70, 82.5, 100, 140].map((wt) => (
-                        <button
-                          key={wt}
-                          type="button"
-                          onClick={() => setDemoWeight(wt)}
-                          className={`px-3 py-1.5 rounded-lg border text-xs cursor-pointer transition-all ${
-                            demoWeight === wt
-                              ? "bg-primary text-on-primary font-bold border-primary"
-                              : "bg-surface-2 text-ink-muted border-hairline hover:text-ink"
-                          }`}
-                        >
-                          {wt}kg
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div className="p-5 rounded-xl bg-surface-2/80 border border-hairline flex flex-col sm:flex-row justify-between sm:items-center gap-4">
-                    <div>
-                      <span className="text-ink-subtle block text-[11px]">RACK PER SLEEVE (ONE SIDE):</span>
-                      <div className="flex flex-wrap gap-2 mt-2">
-                        {calculatePlates(demoWeight).map((item, idx) => (
-                          <span
-                            key={idx}
-                            className="px-3 py-1.5 rounded-lg bg-primary/20 text-primary border border-primary/40 font-bold text-sm"
-                          >
-                            {item.count} × {item.plate}kg
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                    <div className="text-right">
-                      <span className="text-ink-subtle text-[11px] block">TOTAL LOAD</span>
-                      <span className="text-2xl font-extrabold text-ink">{demoWeight} kg</span>
-                      <span className="text-[10px] text-ink-subtle block">20kg bar + {(demoWeight - 20) / 2}kg/side</span>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-2 gap-4 text-xs font-mono text-ink-subtle pt-2">
-                  <div className="flex items-center gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-primary shrink-0" />
-                    <span>CSCS Progressive Overload Targets</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-primary shrink-0" />
-                    <span>Haptic Rest Timers (90s / 180s)</span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="md:col-span-5 glass-panel-elevated p-8 rounded-3xl space-y-6 border border-white/10 flex flex-col justify-between">
-                <div className="space-y-4">
-                  <Badge variant="secondary" className="text-[10px] font-mono text-cyan-400">
-                    SET & REP MATRIX
-                  </Badge>
-                  <h3 className="text-2xl font-bold text-ink">
-                    0.5kg Precision Logging with Previous Session Memory
-                  </h3>
-                  <p className="text-sm text-ink-muted leading-relaxed">
-                    Kynvelo pre-fills your previous session's weight and reps in subtle ghost text. You always know whether you are progressing or stagnating.
-                  </p>
-                </div>
-
-                <div className="p-4 rounded-xl bg-surface-1 border border-hairline font-mono text-xs space-y-2">
-                  <div className="flex justify-between text-ink-subtle pb-1 border-b border-hairline">
-                    <span>SET</span>
-                    <span>TARGET</span>
-                    <span className="text-right">RPE</span>
-                  </div>
-                  <div className="flex justify-between text-ink">
-                    <span className="text-primary font-bold">1 (Warmup)</span>
-                    <span>50.0 kg × 10</span>
-                    <span className="text-ink-subtle">RPE 6</span>
-                  </div>
-                  <div className="flex justify-between text-ink">
-                    <span className="text-primary font-bold">2 (Working)</span>
-                    <span>82.5 kg × 8</span>
-                    <span className="text-ink-subtle">RPE 8.5</span>
-                  </div>
-                  <div className="flex justify-between text-ink font-bold">
-                    <span className="text-emerald-400">3 (PR Set)</span>
-                    <span className="text-emerald-400">85.0 kg × 6 (+2.5kg)</span>
-                    <span className="text-emerald-400">RPE 9</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* ========================================================================= */}
-        {/* 3. TWO-STAGE AI NUTRITION & MEAL PLANNING                                  */}
-        {/* ========================================================================= */}
-        <section id="nutrition" className="py-24 relative overflow-hidden">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
-            <div className="max-w-3xl space-y-3">
-              <Badge variant="primary" className="font-mono text-[11px] px-3 py-1 text-cyan-400">
-                MODULE 02: FUEL & DIET PLANNING
-              </Badge>
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-ink tracking-tight">
-                Two-Stage AI Nutrition. <br />
-                <span className="text-cyan-400 font-mono">Verified Against Real USDA Databases.</span>
-              </h2>
-              <p className="text-sm sm:text-base text-ink-muted leading-relaxed">
-                Generic AI nutrition bots hallucinate imaginary calories. Kynvelo uses a Two-Stage verification pipeline: camera vision identifies meal components, which are then cross-referenced against USDA FoodData Central databases.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div className="glass-panel-elevated p-8 rounded-3xl space-y-4 border border-white/10">
-                <Camera className="w-8 h-8 text-cyan-400" />
-                <h3 className="text-xl font-bold text-ink">1. Camera Vision Scan</h3>
-                <p className="text-xs sm:text-sm text-ink-muted leading-relaxed">
-                  Snap your plate or meal prep container. Multimodal vision detects ingredients, portion sizes, and preparation methods.
-                </p>
-              </div>
-
-              <div className="glass-panel-elevated p-8 rounded-3xl space-y-4 border border-white/10">
-                <ShieldCheck className="w-8 h-8 text-primary" />
-                <h3 className="text-xl font-bold text-ink">2. USDA Cross-Verification</h3>
-                <p className="text-xs sm:text-sm text-ink-muted leading-relaxed">
-                  Raw ingredients are verified against laboratory-tested macro benchmarks, eliminating calorie hallucinations.
-                </p>
-              </div>
-
-              <div className="glass-panel-elevated p-8 rounded-3xl space-y-4 border border-white/10">
-                <Activity className="w-8 h-8 text-emerald-400" />
-                <h3 className="text-xl font-bold text-ink">3. Concentric Rings</h3>
-                <p className="text-xs sm:text-sm text-ink-muted leading-relaxed">
-                  Dynamic visual rings track daily Protein, Carbs, Fat, and hydration targets tailored to your strength phase (cut, lean bulk, or maintenance).
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* ========================================================================= */}
-        {/* 4. RECOVERY HEATMAP & 15S TURNSTILE PASS                                  */}
-        {/* ========================================================================= */}
-        <section id="recovery" className="py-24 relative overflow-hidden border-t border-white/[0.08]">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-stretch">
-              {/* Recovery Heatmap */}
-              <div className="glass-panel-elevated p-8 rounded-3xl space-y-6 border border-white/10">
-                <div className="flex justify-between items-center">
-                  <Badge variant="primary" className="text-[10px] font-mono">
-                    72-HOUR RECOVERY ENGINE
-                  </Badge>
-                  <span className="text-xs font-mono text-emerald-400">READY TO TRAIN</span>
-                </div>
-
-                <h3 className="text-2xl font-bold text-ink">
-                  Muscle Fatigue & Readiness Heatmap
+          <ol className="mt-14 grid gap-px overflow-hidden rounded-lg border border-line bg-line sm:grid-cols-3">
+            {[
+              {
+                step: "01",
+                title: "The model looks",
+                body: "A vision model identifies what is on the plate and estimates portions. That is all it is allowed to do — it never returns a calorie figure.",
+              },
+              {
+                step: "02",
+                title: "The database counts",
+                body: "Each identified item is resolved against USDA FoodData Central. Every calorie and macro comes from that table, not from the model.",
+              },
+              {
+                step: "03",
+                title: "You correct it",
+                body: "Portions are editable before saving, because the model estimating 150 g of rice when it was 220 g is the one error left to make.",
+              },
+            ].map((s) => (
+              <li key={s.step} className="bg-canvas p-6 sm:p-7">
+                <span className="tnum text-[13px] text-primary">{s.step}</span>
+                <h3 className="mt-3 font-display text-xl font-semibold text-ink">
+                  {s.title}
                 </h3>
-                <p className="text-sm text-ink-muted leading-relaxed">
-                  Kynvelo maps every rep and set to anatomical muscle groups, calculating rest intervals so you never overtrain or hit dead legs on squat day.
+                <p className="mt-2.5 text-[15px] leading-relaxed text-ink-muted">
+                  {s.body}
                 </p>
+              </li>
+            ))}
+          </ol>
 
-                <div className="grid grid-cols-3 gap-3 font-mono text-xs">
-                  <div className="p-3 rounded-xl bg-surface-1 border border-hairline space-y-1">
-                    <span className="text-[10px] text-ink-subtle block">CHEST</span>
-                    <span className="text-danger font-bold">48h Left</span>
-                    <span className="text-[10px] text-ink-subtle block">Heavy Fatigue</span>
-                  </div>
-                  <div className="p-3 rounded-xl bg-surface-1 border border-hairline space-y-1">
-                    <span className="text-[10px] text-ink-subtle block">BACK</span>
-                    <span className="text-emerald-400 font-bold">100% Primed</span>
-                    <span className="text-[10px] text-ink-subtle block">Ready for Rows</span>
-                  </div>
-                  <div className="p-3 rounded-xl bg-surface-1 border border-hairline space-y-1">
-                    <span className="text-[10px] text-ink-subtle block">LEGS</span>
-                    <span className="text-warning font-bold">60% Rested</span>
-                    <span className="text-[10px] text-ink-subtle block">Light Volume</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* 15s HMAC Turnstile Pass */}
-              <div id="turnstile-pass" className="glass-panel-elevated p-8 rounded-3xl space-y-6 border border-white/10 flex flex-col justify-between">
-                <div className="space-y-4">
-                  <Badge variant="secondary" className="text-[10px] font-mono text-primary">
-                    ZERO-WAIT ACCESS
-                  </Badge>
-                  <h3 className="text-2xl font-bold text-ink">
-                    15-Second Dynamic Rotating Turnstile Pass
-                  </h3>
-                  <p className="text-sm text-ink-muted leading-relaxed">
-                    No physical plastic cards to lose. Every 15 seconds, a cryptographic time-bound HMAC token regenerates on your phone. Works completely offline at any Kynvelo-powered gym turnstile.
-                  </p>
-                </div>
-
-                <div className="p-5 rounded-2xl bg-surface-1 border border-hairline flex items-center gap-5">
-                  <div className="w-16 h-16 rounded-xl bg-white p-1.5 flex items-center justify-center shrink-0">
-                    <QrCode className="w-full h-full text-black" />
-                  </div>
-                  <div className="font-mono text-xs space-y-1">
-                    <span className="font-bold text-ink text-sm block">Anti-Passback Protected</span>
-                    <span className="text-primary font-bold block">15s HMAC Refresh Active</span>
-                    <span className="text-[11px] text-ink-subtle block">Instant 300ms Turnstile Entry</span>
-                  </div>
-                </div>
-              </div>
-            </div>
+          {/* Four logging methods. Abandonment is the real competitor — people
+              stop tracking when the method doesn't fit the meal. */}
+          <div className="mt-8">
+            <NutritionMethods />
           </div>
-        </section>
 
-        {/* ========================================================================= */}
-        {/* 5. CONSUMER PRICING (FREE FOREVER VS PRO PASS)                            */}
-        {/* ========================================================================= */}
-        <section id="pricing" className="py-24 relative overflow-hidden border-t border-white/[0.08]">
-          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
-            <div className="text-center max-w-3xl mx-auto space-y-3">
-              <Badge variant="primary" className="font-mono text-[11px] px-3 py-1">
-                TRANSPARENT ATHLETE PRICING
-              </Badge>
-              <h2 className="text-3xl sm:text-5xl font-extrabold text-ink tracking-tight">
-                Zero Subscriptions for Core Strength Tracking
-              </h2>
-              <p className="text-sm sm:text-base text-ink-muted leading-relaxed">
-                Workout logging, plate math, and personal records are 100% free forever. Upgrade to Pro only if you want advanced AI nutrition scanning and muscle recovery scoring.
+          {/* The screen every calorie tracker is recognised by. */}
+          <div className="mt-8 grid gap-8 lg:grid-cols-12 lg:items-center lg:gap-12">
+            <div className="lg:col-span-7">
+              <MacroRings />
+            </div>
+            <div className="space-y-4 lg:col-span-5">
+              <h3 className="font-display text-2xl font-semibold text-ink">
+                Always the answer to &ldquo;what&apos;s left today?&rdquo;
+              </h3>
+              <p className="text-[15px] leading-relaxed text-ink-muted">
+                Calories and each macro against your target, with the remainder
+                stated rather than the total consumed — because the number you
+                act on at 8pm is what you have left, not what you have eaten.
               </p>
-
-              {/* Monthly vs Annual Toggle */}
-              <div className="flex items-center justify-center gap-3 font-mono text-xs pt-4">
-                <span className={!isAnnual ? "text-ink font-bold" : "text-ink-subtle"}>Monthly</span>
-                <button
-                  type="button"
-                  onClick={() => setIsAnnual(!isAnnual)}
-                  className="relative w-10 h-5 rounded-full bg-surface-3 transition-colors p-0.5 cursor-pointer"
-                >
-                  <div
-                    className={`w-4 h-4 rounded-full bg-primary transition-transform ${
-                      isAnnual ? "translate-x-5" : "translate-x-0"
-                    }`}
-                  />
-                </button>
-                <span className={isAnnual ? "text-primary font-bold" : "text-ink-subtle"}>
-                  Annual (Save 20%)
-                </span>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch">
-              {/* Free Athlete */}
-              <div className="glass-panel-elevated p-8 rounded-3xl flex flex-col justify-between space-y-6 border border-white/10">
-                <div className="space-y-4">
-                  <div className="flex justify-between items-start">
-                    <div>
-                      <h3 className="text-2xl font-bold text-ink">Free Athlete</h3>
-                      <p className="text-xs text-ink-muted mt-1">Essential strength tracking with zero ads.</p>
-                    </div>
-                    <Badge variant="secondary" className="font-mono text-[10px]">FREE FOREVER</Badge>
-                  </div>
-
-                  <div className="pt-2 font-mono">
-                    <span className="text-4xl font-extrabold text-ink">₹0</span>
-                    <span className="text-xs text-ink-subtle ml-2">/ forever</span>
-                    <span className="text-[11px] text-ink-subtle block mt-0.5">No credit card or payment required</span>
-                  </div>
-
-                  <div className="pt-4 border-t border-white/[0.08] space-y-3">
-                    <span className="text-[11px] font-mono text-ink-subtle uppercase tracking-wider block">INCLUDED:</span>
-                    <ul className="space-y-2.5 text-xs text-ink-muted font-mono">
-                      {[
-                        "Core Workout Logger & Progressive Overload",
-                        "Olympic Barbell Plate Math Calculator",
-                        "Basic Daily Macro & Water Tracking",
-                        "Personal Record (PR) Trophy Vault",
-                        "Full CSV/JSON Data Export (DPDP Rights)",
-                        "Zero Advertisements Guarantee",
-                      ].map((f, i) => (
-                        <li key={i} className="flex items-center gap-2.5">
-                          <Check className="w-4 h-4 text-primary shrink-0" />
-                          <span>{f}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-
-                <Link href="/signup">
-                  <Button variant="secondary" className="w-full py-5 text-xs font-bold font-mono">
-                    Start Free Logging
-                  </Button>
-                </Link>
-              </div>
-
-              {/* Pro Athlete Pass */}
-              <div className="glass-panel-elevated p-8 rounded-3xl flex flex-col justify-between space-y-6 border border-primary/50 shadow-[0_0_40px_rgba(198,255,0,0.15)] ring-1 ring-primary/40 relative">
-                <div className="absolute -top-3.5 left-1/2 -translate-x-1/2">
-                  <Badge variant="primary" className="text-[10px] font-mono px-3 py-1">
-                    RECOMMENDED PASS
-                  </Badge>
-                </div>
-
-                <div className="space-y-4">
-                  <div className="flex justify-between items-start">
-                    <div>
-                      <h3 className="text-2xl font-bold text-ink">Pro Athlete Pass</h3>
-                      <p className="text-xs text-ink-muted mt-1">AI nutrition verification & muscle recovery.</p>
-                    </div>
-                    <Badge variant="secondary" className="font-mono text-[10px] text-primary">PRO ATHLETE</Badge>
-                  </div>
-
-                  <div className="pt-2 font-mono">
-                    <span className="text-4xl font-extrabold text-ink">
-                      {isAnnual ? "₹333" : "₹499"}
-                    </span>
-                    <span className="text-xs text-ink-subtle ml-2">/ month</span>
-                    <span className="text-[11px] text-ink-subtle block mt-0.5">
-                      {isAnnual ? "Billed annually (₹3,999/yr). Save 20%." : "Billed monthly. Cancel anytime."}
-                    </span>
-                  </div>
-
-                  <div className="pt-4 border-t border-white/[0.08] space-y-3">
-                    <span className="text-[11px] font-mono text-ink-subtle uppercase tracking-wider block">ALL FREE FEATURES PLUS:</span>
-                    <ul className="space-y-2.5 text-xs text-ink-muted font-mono">
-                      {[
-                        "Two-Stage AI Camera Food Scanner (USDA Verified)",
-                        "72-Hour Muscle Fatigue & Readiness Heatmap",
-                        "Apple Health & Google Health Connect Sync",
-                        "Personal Trainer Direct Chat & Routine Imports",
-                        "Unlimited Cloud Sync & Multi-Device Access",
-                      ].map((f, i) => (
-                        <li key={i} className="flex items-center gap-2.5">
-                          <Check className="w-4 h-4 text-primary shrink-0" />
-                          <span>{f}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-
-                <Link href="/signup?plan=athlete-pro">
-                  <Button variant="primary" className="w-full py-5 text-xs font-bold font-mono gap-2">
-                    <span>Start 14-Day Free Trial</span>
-                    <ArrowRight className="w-3.5 h-3.5" />
-                  </Button>
-                </Link>
-              </div>
-            </div>
-
-            {/* B2B Callout */}
-            <div className="p-6 rounded-2xl bg-surface-1 border border-hairline flex flex-col sm:flex-row justify-between items-center gap-4 text-xs font-mono">
-              <div className="flex items-center gap-2.5">
-                <Building2 className="w-4 h-4 text-primary" />
-                <span className="text-ink-muted">Are you a Gym Owner, Club Founder, or Studio Director?</span>
-              </div>
-              <Link href="/business" className="text-primary hover:underline font-bold">
-                Explore Kynvelo for Gyms &rarr;
-              </Link>
+              <p className="text-[14px] text-ink-subtle">
+                Net carbs, fibre, sodium and potassium are tracked too, which is
+                what makes keto, diabetic and low-sodium diets workable.
+              </p>
             </div>
           </div>
-        </section>
+        </Section>
+
+        {/* ---------------------------------------------------------------
+            RECOVERY + GYM PASS
+            Two unrelated capabilities, deliberately different shapes so the
+            section doesn't read as another card pair.
+            --------------------------------------------------------------- */}
+        {/* ---------------------------------------------------------------
+            RECOVERY & READINESS
+            The two highest-differentiation features in the product. v1
+            rendered the heatmap as three rows of text and omitted readiness
+            entirely.
+            --------------------------------------------------------------- */}
+        <Section id="recovery">
+          <SectionHead
+            title={
+              <>
+                Know what&apos;s <V>recovered</V>
+                <br />
+                before you load the bar.
+              </>
+            }
+            aside={
+              <Lede>
+                Every logged set feeds a per-muscle readiness score across a
+                72-hour window, and a three-tap morning check-in adjusts the
+                volume it recommends. Quads at 38% is the answer to whether
+                today is a squat day.
+              </Lede>
+            }
+            className="mb-14"
+          />
+          <RecoveryBody />
+        </Section>
+
+        {/* ---------------------------------------------------------------
+            PROGRESS
+            Highest-value absent feature: the transformation slider.
+            --------------------------------------------------------------- */}
+        <Section id="progress">
+          <SectionHead
+            title={
+              <>
+                The reason people <V>don&apos;t quit</V>
+                <br />
+                in month three.
+              </>
+            }
+            lede="Strength goes up before the mirror catches up. Kynvelo keeps the evidence — dated photos, every personal record, and the streak you'd rather not break."
+            className="mb-14"
+          />
+
+          <div className="grid gap-12 lg:grid-cols-12 lg:gap-16">
+            <div className="lg:col-span-6">
+              <TransformationSlider />
+            </div>
+
+            <div className="space-y-10 lg:col-span-6">
+              <div>
+                <h3 className="font-display text-lg font-semibold text-ink">
+                  Personal records, detected for you
+                </h3>
+                <ul className="mt-4 divide-y divide-line border-y border-line">
+                  {[
+                    ["Back Squat", "82.5 kg × 8", "+2.5 kg"],
+                    ["Bench Press", "70.0 kg × 6", "+2.5 kg"],
+                    ["Deadlift", "130.0 kg × 5", "+5.0 kg"],
+                  ].map(([lift, best, delta]) => (
+                    <li
+                      key={lift}
+                      className="flex items-baseline justify-between gap-4 py-3"
+                    >
+                      <span className="text-[15px] text-ink">{lift}</span>
+                      <span className="tnum text-[15px] text-ink-muted">
+                        {best}
+                      </span>
+                      <span className="tnum w-16 text-right text-[14px] text-primary">
+                        {delta}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+                <p className="mt-3 text-[13px] text-ink-subtle">
+                  Estimated 1RM from Brzycki, with the full percentage table for
+                  programme work.
+                </p>
+              </div>
+
+              <StreakGrid />
+            </div>
+          </div>
+        </Section>
+
+        {/* ---------------------------------------------------------------
+            BODY NUMBERS
+            --------------------------------------------------------------- */}
+        <Section id="numbers">
+          <SectionHead
+            title={
+              <>
+                Start from your <V>actual</V> numbers.
+              </>
+            }
+            lede="Most apps hand you a round 2,000 kcal and let you find out it was wrong. This is the real Mifflin-St Jeor calculation — try it now, before you sign up for anything."
+            className="mb-14"
+          />
+          <TdeeWidget />
+
+          <div className="mt-14 grid gap-x-10 gap-y-8 border-t border-line pt-10 sm:grid-cols-3">
+            <div>
+              <h3 className="font-display text-lg font-semibold text-ink">
+                Steps and cardio
+              </h3>
+              <p className="mt-2 text-[15px] leading-relaxed text-ink-muted">
+                Treadmill, elliptical, outdoor run, cycling and rowing, with
+                distance, pace and energy — in the same place as your lifts.
+              </p>
+            </div>
+            <div>
+              <h3 className="font-display text-lg font-semibold text-ink">
+                Health sync
+              </h3>
+              <p className="mt-2 text-[15px] leading-relaxed text-ink-muted">
+                Apple Health and Health Connect feed steps, active energy,
+                resting heart rate and sleep in the background. Nothing to type.
+              </p>
+            </div>
+            <div>
+              <h3 className="font-display text-lg font-semibold text-ink">
+                Hydration
+              </h3>
+              <p className="mt-2 text-[15px] leading-relaxed text-ink-muted">
+                Tap for a 250 ml glass. One less app on your phone, which is the
+                entire point of the section above.
+              </p>
+            </div>
+          </div>
+        </Section>
+
+        {/* ---------------------------------------------------------------
+            GYM PASS + MEMBER BENEFITS
+            Things an athlete at a Kynvelo gym is never currently told.
+            --------------------------------------------------------------- */}
+        <Section id="gym-pass">
+          <div className="grid gap-14 lg:grid-cols-12 lg:gap-16">
+            <div className="space-y-5 lg:col-span-6">
+              <Display size="sm">
+                Walk in without <V>queueing</V>.
+              </Display>
+              <Lede>
+                If your gym runs Kynvelo, your pass is a code that regenerates
+                every 15 seconds, so a screenshot is worthless to anyone you
+                send it to. It works offline and syncs the real timestamp when
+                you reconnect.
+              </Lede>
+              <p className="text-[14px] text-ink-subtle">
+                No gym on Kynvelo yet? Everything else works regardless.{" "}
+                <Link
+                  href="/business"
+                  className="text-ink-muted underline decoration-line underline-offset-4 transition-colors hover:text-primary"
+                >
+                  Send them the gym-owner site
+                </Link>
+                .
+              </p>
+            </div>
+
+            <div className="space-y-5 lg:col-span-6">
+              <Display size="sm">
+                And you stop <V>queueing</V> for everything else too.
+              </Display>
+              <ul className="divide-y divide-line border-y border-line">
+                {[
+                  [
+                    "Renew from your phone",
+                    "1, 3, 6 or 12 months over UPI. No auto-debit mandate, no surprise charge.",
+                  ],
+                  [
+                    "Book PT and dietitian sessions",
+                    "See a trainer's remaining prepaid sessions instead of arguing about the count.",
+                  ],
+                  [
+                    "Buy supplements in-app",
+                    "Live stock, so you don't walk to the counter for something that ran out.",
+                  ],
+                  [
+                    "Download your GST invoice",
+                    "Every payment, as a proper tax invoice, whenever you need it.",
+                  ],
+                  [
+                    "Export or erase everything",
+                    "One tap, under the DPDP Act. Your training and health data is never sold.",
+                  ],
+                ].map(([t, b]) => (
+                  <li key={t} className="py-3.5">
+                    <p className="text-[15px] text-ink">{t}</p>
+                    <p className="mt-1 text-[14px] leading-relaxed text-ink-muted">
+                      {b}
+                    </p>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </Section>
+
+        {/* ---------------------------------------------------------------
+            PRICING
+            --------------------------------------------------------------- */}
+        <Section id="pricing">
+          <SectionHead
+            title={
+              <>
+                Logging is free. <V>Forever</V>.
+              </>
+            }
+            lede="The paid tier exists for the AI meal scan and full history, because both cost us money to run. Everything else does not, so it isn't paywalled."
+            className="mb-14"
+          />
+          <AthletePlans />
+        </Section>
+
+        {/* ---------------------------------------------------------------
+            CROSS-AUDIENCE
+            One quiet band, not a duplicate hero.
+            --------------------------------------------------------------- */}
+        <Section size="sm">
+          <div className="flex flex-col justify-between gap-6 sm:flex-row sm:items-center">
+            <div className="space-y-2">
+              <h2 className="font-display text-2xl font-semibold text-ink">
+                Run a gym?
+              </h2>
+              <p className="max-w-xl text-[15px] leading-relaxed text-ink-muted">
+                There&apos;s a separate site for turnstile access, no-show
+                recovery and GST billing.
+              </p>
+            </div>
+            <Button asChild variant="secondary" size="lg">
+              <Link href="/business">For gym owners</Link>
+            </Button>
+          </div>
+        </Section>
       </main>
 
-      <Footer />
-    </div>
+      <SiteFooter />
+    </>
   );
 }

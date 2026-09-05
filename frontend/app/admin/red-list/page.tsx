@@ -122,16 +122,18 @@ export default function RedListPage() {
 
         {/* Filter Tabs */}
         <div className="flex flex-wrap gap-2 font-mono text-xs">
-          {[
+          {/* `as const` narrows tab.id to the RiskFilter union, so setFilter
+              type-checks without an `any` cast. */}
+          {([
             { id: "all", label: "All Cases (24)" },
             { id: "10-14", label: "10–14 Days Absent (12)" },
             { id: "15-21", label: "15–21 Days Absent (8)" },
             { id: "22+", label: "22+ Days Critical (4)" },
-          ].map((tab) => (
+          ] as const).map((tab) => (
             <button
               key={tab.id}
               type="button"
-              onClick={() => setFilter(tab.id as any)}
+              onClick={() => setFilter(tab.id)}
               className={`px-3 py-1.5 rounded-lg border transition-colors cursor-pointer ${
                 filter === tab.id
                   ? "bg-danger/20 border-danger text-danger font-bold"

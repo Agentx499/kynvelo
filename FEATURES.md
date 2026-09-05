@@ -190,12 +190,8 @@
 - **What It Does:** Visual 3D/2D anatomical human body model showing muscle recovery status (Green = Recovered 100%, Amber = Recovering 50%, Red = Heavily Fatigued) calculated dynamically based on training volume logged in the past 48–72 hours.
 - **Where It Lives:** Workout Hub (`/app/workout`), Recovery View (`/app/workout/muscle-recovery`).
 - **Primary Role:** Gym Members, Athletes & Personal Trainers.
-- **Business Benefit & Problem Solved:** Delivers powerful dopamine rewards that keep gym members engaged and proud of their progress.
-- **What It Does:** Automatically detects when a member exceeds their prior best lift on an exercise (highest weight or estimated 1RM). Triggers a celebratory gold badge and archives the record in the PR Vault.
-- **Where It Lives:** Post-Workout Summary (`/app/workout/summary`), PR Records Vault (`/app/workout/records`).
-- **Primary Role:** Gym Members & Personal Trainers.
 
-### 5.4 Personal Trainer Client Roster & Session Countdown
+### 5.9 Personal Trainer Client Roster & Session Countdown
 - **Business Benefit & Problem Solved:** Eliminates disputes over how many PT sessions a client has remaining.
 - **What It Does:** Trainers view their assigned clients, see remaining prepaid session counts (e.g. 8/12 sessions remaining), and log session completion with one tap. Member receives an instant verification alert.
 - **Where It Lives:** Trainer Mobile Ops (`/ops/trainer/clients`), Member Add-on Hub (`/app/marketplace/my-orders`).
@@ -239,7 +235,8 @@
 
 ### 8.1 Transparent Referral Partner Commission Portal (Surface C)
 - **Business Benefit & Problem Solved:** Creates a viral army of fitness trainers, equipment dealers, and consultants selling Kynvelo to gym owners.
-- **What It Does:** Provides partners with a unique referral link. Tracks onboarded gyms, active months, and automated monthly commission payouts of **₹10,000 per active gym for 10 months** (capped transparently at ₹10,000/mo).
+- **What It Does:** Provides partners with a unique referral link. Tracks onboarded gyms, active months, and automated monthly commission payouts of **20% of the gym's base plan fee for 6 months, capped at ₹10,000 total per referred gym**, with a ₹1,000 minimum payout threshold.
+  > **Corrected 2026-09-04.** This entry previously stated "₹10,000 per active gym for 10 months (capped at ₹10,000/mo)". That is ~17× higher than PRODUCT.md 5.3 and exceeds the entire Starter plan fee of ₹2,999/mo, so it would have paid the partner more than the gym pays Kynvelo, every month. PRODUCT.md 5.3 is the specification of record and the frontend implements it. See `frontend/lib/pricing.ts` → `COMMISSION`.
 - **Where It Lives:** Partner Web Portal (`/partners`), Partner Dashboard (`/ops/partner/payouts`).
 - **Primary Role:** Referral Partners & Affiliates.
 

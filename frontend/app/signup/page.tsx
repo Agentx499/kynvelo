@@ -1,223 +1,50 @@
-"use client";
+import type { Metadata } from "next";
+import { AuthShell, V } from "@/components/auth/auth-shell";
+import { AuthForm } from "@/components/auth/auth-form";
 
-import React, { useState } from "react";
-import Link from "next/link";
-import Image from "next/image";
-import { useRouter } from "next/navigation";
-import { Dumbbell, Building2, ArrowRight, CheckCircle2, ShieldCheck, Sparkles } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+export const metadata: Metadata = {
+  title: "Create your athlete account",
+  description:
+    "Free forever for workout logging, plate math and personal records. Works with or without a gym on Kynvelo.",
+  alternates: { canonical: "/signup" },
+  robots: { index: true, follow: true },
+};
 
-export default function SignupPage() {
-  const router = useRouter();
-  const [role, setRole] = useState<"athlete" | "owner">("athlete");
-  const [step, setStep] = useState(1);
-  const [formData, setFormData] = useState({
-    name: "",
-    phone: "",
-    email: "",
-    gymCode: "",
-    facilityName: "",
-  });
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (step === 1) {
-      setStep(2);
-    } else {
-      // Simulate account generation and route to appropriate experience
-      if (role === "athlete") {
-        router.push("/app/pulse");
-      } else {
-        router.push("/admin/terminal");
-      }
-    }
-  };
+export default async function SignupPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ role?: string }>;
+}) {
+  const { role } = await searchParams;
 
   return (
-    <div className="min-h-screen bg-canvas text-ink flex flex-col justify-between p-4 sm:p-8">
-      {/* Top Header */}
-      <div className="flex justify-between items-center max-w-5xl mx-auto w-full">
-        <Link href="/" className="flex items-center gap-2.5">
-          <div className="relative w-8 h-8 rounded-lg overflow-hidden border border-hairline shadow-sm">
-            <Image
-              src="/logo.svg"
-              alt="Kynvelo"
-              fill
-              className="object-contain p-0.5"
-            />
-          </div>
-          <span className="font-mono text-base font-extrabold tracking-wider text-ink">
-            KYNVELO
-          </span>
-        </Link>
-        <div className="text-xs text-ink-muted">
-          Already have an account?{" "}
-          <Link href="/login" className="text-primary font-semibold hover:underline">
-            Sign In
-          </Link>
-        </div>
-      </div>
-
-      {/* Main Card */}
-      <div className="max-w-md w-full mx-auto my-12 p-8 rounded-2xl bg-surface-1 border border-hairline shadow-2xl">
-        <div className="text-center mb-6">
-          <Badge variant="primary" className="mb-2">
-            STEP {step} OF 2
-          </Badge>
-          <h2 className="text-2xl font-extrabold text-ink">
-            {step === 1 ? "Choose Your Experience" : "Complete Profile Setup"}
-          </h2>
-          <p className="text-xs text-ink-muted mt-1">
-            {step === 1
-              ? "Select how you will be using the Kynvelo Operating System"
-              : "Enter your verification contact details"}
-          </p>
-        </div>
-
-        <form onSubmit={handleSubmit} className="space-y-4">
-          {step === 1 ? (
-            <div className="space-y-3">
-              {/* Option A: Athlete */}
-              <div
-                onClick={() => setRole("athlete")}
-                className={`p-4 rounded-xl border cursor-pointer transition-all flex items-start gap-3 ${
-                  role === "athlete"
-                    ? "bg-primary/10 border-primary shadow-[0_0_20px_rgba(198,255,0,0.15)]"
-                    : "bg-surface-2 border-hairline hover:border-hairline-strong"
-                }`}
-              >
-                <div
-                  className={`w-10 h-10 rounded-lg flex items-center justify-center shrink-0 ${
-                    role === "athlete" ? "bg-primary text-on-primary" : "bg-surface-3 text-ink-muted"
-                  }`}
-                >
-                  <Dumbbell className="w-5 h-5" />
-                </div>
-                <div>
-                  <h4 className="text-sm font-bold text-ink">Individual Athlete / Lifter</h4>
-                  <p className="text-xs text-ink-muted mt-0.5 leading-relaxed">
-                    Track workouts with barbell plate math, scan meals with 2-stage AI, and access partner turnstiles. Free forever.
-                  </p>
-                </div>
-              </div>
-
-              {/* Option B: Gym Owner */}
-              <div
-                onClick={() => setRole("owner")}
-                className={`p-4 rounded-xl border cursor-pointer transition-all flex items-start gap-3 ${
-                  role === "owner"
-                    ? "bg-primary/10 border-primary shadow-[0_0_20px_rgba(198,255,0,0.15)]"
-                    : "bg-surface-2 border-hairline hover:border-hairline-strong"
-                }`}
-              >
-                <div
-                  className={`w-10 h-10 rounded-lg flex items-center justify-center shrink-0 ${
-                    role === "owner" ? "bg-primary text-on-primary" : "bg-surface-3 text-ink-muted"
-                  }`}
-                >
-                  <Building2 className="w-5 h-5" />
-                </div>
-                <div>
-                  <h4 className="text-sm font-bold text-ink">Gym Owner / Fitness Club</h4>
-                  <p className="text-xs text-ink-muted mt-0.5 leading-relaxed">
-                    Automate turnstiles, detect inactive members at Day 10, recover renewals via WhatsApp, and manage GST invoicing.
-                  </p>
-                </div>
-              </div>
-
-              <Button type="submit" variant="primary" className="w-full mt-4 gap-2">
-                <span>Continue to Details</span>
-                <ArrowRight className="w-4 h-4" />
-              </Button>
-            </div>
-          ) : (
-            <div className="space-y-4">
-              <div>
-                <label className="block text-xs font-mono text-ink-subtle mb-1">
-                  FULL NAME
-                </label>
-                <input
-                  type="text"
-                  required
-                  value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  placeholder="e.g. Rahul Sharma"
-                  className="w-full p-3 rounded-lg bg-surface-2 border border-hairline focus:border-primary text-ink outline-none text-sm"
-                />
-              </div>
-
-              <div>
-                <label className="block text-xs font-mono text-ink-subtle mb-1">
-                  PHONE NUMBER (FOR OTP & TURNSTILE QR)
-                </label>
-                <input
-                  type="tel"
-                  required
-                  value={formData.phone}
-                  onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                  placeholder="+91 98201 XXXXX"
-                  className="w-full p-3 rounded-lg bg-surface-2 border border-hairline focus:border-primary text-ink outline-none text-sm font-mono"
-                />
-              </div>
-
-              {role === "owner" && (
-                <div>
-                  <label className="block text-xs font-mono text-ink-subtle mb-1">
-                    GYM / FACILITY NAME
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    value={formData.facilityName}
-                    onChange={(e) => setFormData({ ...formData, facilityName: e.target.value })}
-                    placeholder="e.g. Titan Iron Gym"
-                    className="w-full p-3 rounded-lg bg-surface-2 border border-hairline focus:border-primary text-ink outline-none text-sm"
-                  />
-                </div>
-              )}
-
-              {role === "athlete" && (
-                <div>
-                  <label className="block text-xs font-mono text-ink-subtle mb-1">
-                    GYM CODE (OPTIONAL)
-                  </label>
-                  <input
-                    type="text"
-                    value={formData.gymCode}
-                    onChange={(e) => setFormData({ ...formData, gymCode: e.target.value })}
-                    placeholder="e.g. TITAN-MUMBAI"
-                    className="w-full p-3 rounded-lg bg-surface-2 border border-hairline focus:border-primary text-ink outline-none text-sm font-mono uppercase"
-                  />
-                  <span className="text-[10px] text-ink-subtle mt-0.5 block">
-                    Enter code to link your account to your local gym turnstile.
-                  </span>
-                </div>
-              )}
-
-              <div className="flex gap-3 pt-2">
-                <Button
-                  type="button"
-                  variant="secondary"
-                  onClick={() => setStep(1)}
-                  className="w-1/3"
-                >
-                  Back
-                </Button>
-                <Button type="submit" variant="primary" className="w-2/3">
-                  {role === "athlete" ? "Launch Athlete App" : "Launch Gym Kiosk"}
-                </Button>
-              </div>
-            </div>
-          )}
-        </form>
-      </div>
-
-      {/* Footer Trust Bar */}
-      <div className="text-center text-xs font-mono text-ink-subtle flex items-center justify-center gap-2">
-        <ShieldCheck className="w-4 h-4 text-primary" />
-        <span>End-to-end encrypted session. DPDP Act 2023 certified.</span>
-      </div>
-    </div>
+    <AuthShell
+      title={
+        <>
+          Start logging <V>properly</V>.
+        </>
+      }
+      lede="Free permanently for workout logging, the plate calculator and personal records. No card, no trial clock."
+      points={[
+        {
+          heading: "Nothing is paywalled that shouldn't be",
+          body: "Logging sets, plate math, PRs and 1RM estimates stay free. The paid tier exists for the AI meal scan and unlimited history, because those cost us money per user.",
+        },
+        {
+          heading: "No ads, ever",
+          body: "We don't run advertising, so we have no reason to profile you. Your training and health data is not shared with advertisers, insurers or employers.",
+        },
+        {
+          heading: "Works without your gym",
+          body: "You don't need your gym to use Kynvelo. If they join later, your account links to them without losing any history.",
+        },
+        {
+          heading: "You can take your data out",
+          body: "Full export from account settings, whenever you want, in a format you can actually read.",
+        },
+      ]}
+    >
+      <AuthForm mode="signup" audience="athlete" defaultRole={role ?? null} />
+    </AuthShell>
   );
 }

@@ -54,8 +54,9 @@ Positioned prominently in the Navbar and Hero section, an animated toggle powere
   - Dynamic Display Headline & Subhead adapting to mode.
   - Dual CTAs: Primary Volt Button (`.btn-primary`) + Secondary Border Button (`.btn-secondary`).
   - Interactive Floating App Mockup Frame (`components/blocks/interactive-app-frame.tsx`) showing live workout set logging (Athlete mode) or turnstile check-in stream (Gym mode).
-- **Section 2: Social Proof & Metrics Counter Bar (`components/blocks/stat-ticker.tsx`)**
-  - 4 Animated Count-up Numbers: `1,250,000+` Workouts Logged, `98.4%` Turnstile Uptime, `₹2.4 Cr` Recovered Renewal Revenue, `4.9★` App Rating.
+- **Section 2: Competitive framing band**
+  - *Removed 2026-09-04.* This was specified as an animated 4-stat counter bar reading `1,250,000+` Workouts Logged, `98.4%` Turnstile Uptime, `₹2.4 Cr` Recovered Renewal Revenue and `4.9★` App Rating. Kynvelo is pre-launch; none of those figures can be substantiated, and a fabricated uptime percentage is a liability in a hardware-adjacent sale. The pattern is also Impeccable's banned "hero-metric template".
+  - Replaced by a plain competitive claim ("one app instead of three subscriptions") backed by a feature comparison, with no invented numbers. Reinstate a metrics bar only when the figures are real and attributable.
 - **Section 3: Dual-Audience Bento Grid (`components/blocks/feature-bento.tsx` - 21st.dev ID 18898)**
   - *Athlete Cards:* Barbell Plate Calculator, Two-Stage AI Nutrition Scan (USDA verified), Interactive Muscle Recovery Heatmap.
   - *Gym Owner Cards:* Autonomous Turnstile Hardware Relay, No-Show Red-List CRM with Anti-Collision, Automated GST-Compliant Invoicing.
@@ -72,9 +73,10 @@ Positioned prominently in the Navbar and Hero section, an animated toggle powere
 
 ### Page 80: Pricing & Transparent Plans (`/pricing`)
 - **Components:**
-  - Interval Toggle: Monthly vs Annual (with "2 Months Free" Kinetic Volt badge).
-  - Audience Switcher: B2C Athlete Tiers (Free ₹0, Pro ₹99, Elite ₹299) vs B2B Gym Tiers (Starter ₹2,999, Growth ₹5,999).
-  - Dynamic Overage Slider (+50 Members ₹1,499 / +100 Members ₹2,799).
+  - Interval Toggle: Monthly vs Annual. The saving is computed per tier from real prices (Starter −24%, Pro −30%, gym plans −19%); do NOT label it "2 months free", which is arithmetically false.
+  - Audience Switcher: B2C Athlete Tiers (Free ₹0, **Starter** ₹99, **Pro** ₹299) vs B2B Gym Tiers (Starter ₹2,999, Growth ₹5,999, Enterprise custom).
+  - Dynamic Overage Slider (+50 Members ₹1,499 / +100 Members ₹2,799), applied to whichever gym tier is selected.
+  - *Corrected 2026-09-04:* the athlete tiers were previously named "Free / Pro ₹99 / Elite ₹299". No tier is called Elite anywhere else in the project, and it mislabelled ₹299 — which ships as **Pro**. PRODUCT.md 5.1 is authoritative. The "2 Months Free" badge was also removed as inaccurate.
   - Full Feature Comparison Table (`components/blocks/pricing-comparison.tsx` - 21st.dev ID 1541) with sticky header and checkmarks.
   - Transparent Hardware & Setup FAQ Accordion (`components/ui/accordion.tsx`).
 
@@ -87,10 +89,11 @@ Positioned prominently in the Navbar and Hero section, an animated toggle powere
 
 ### Page 82: Referral Partner Program Portal (`/partners`)
 - **Components:**
-  - Program Overview Hero (Earn ₹10,000/month per referred gym for 10 months).
-  - Live Commission Calculator (e.g. 5 gyms = ₹50,000/month passive revenue).
+  - Program Overview Hero (20% of the gym's base plan fee, paid for 6 months).
+  - Live Commission Calculator (`components/marketing/partner-calculator.tsx`), reading `COMMISSION` from `lib/pricing.ts`.
   - Partner Registration Stepper Wizard.
   - Partner FAQ & Terms of Payouts.
+  - *Corrected 2026-09-04:* previously "₹10,000/month per referred gym for 10 months" and "5 gyms = ₹50,000/month". Both contradicted PRODUCT.md 5.3 and were insolvent on the Starter plan. See FEATURES.md 8.1.
 
 ### Page 83: Public Registration Wizard (`/signup`)
 - **Components:**

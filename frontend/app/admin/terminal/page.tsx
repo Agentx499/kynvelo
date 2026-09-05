@@ -154,7 +154,9 @@ export default function TerminalPage() {
               {/* 4K Video Reticle Viewport Simulation */}
               <div className="relative w-full h-72 rounded-xl bg-black border border-hairline-strong flex flex-col items-center justify-center overflow-hidden shadow-inner">
                 {/* Scanline Animation */}
-                <div className="absolute inset-x-0 h-1 bg-primary/80 shadow-[0_0_15px_#C6FF00] animate-bounce top-1/3" />
+                {/* animate-pulse, not animate-bounce: bounce easing is elastic
+                    and reads as dated. A scanline should fade, not spring. */}
+                <div className="absolute inset-x-0 top-1/3 h-1 animate-pulse bg-primary/80" />
                 <div className="w-48 h-48 border-2 border-primary/50 rounded-2xl flex items-center justify-center p-4 relative">
                   <div className="w-full h-full border border-dashed border-primary/30 rounded-xl flex items-center justify-center">
                     <Camera className="w-12 h-12 text-primary/40" />
@@ -297,7 +299,7 @@ export default function TerminalPage() {
                     className="w-full p-2.5 rounded-lg bg-surface-2 border border-hairline focus:border-primary text-ink outline-none text-xs"
                   >
                     <option>Forgot phone / phone battery died</option>
-                    <option>Camera lens cracked / QR won't scan</option>
+                    <option>Camera lens cracked / QR won&apos;t scan</option>
                     <option>Guest trial pass (Assisted by Manager)</option>
                     <option>Turnstile barrier mechanical test</option>
                   </select>

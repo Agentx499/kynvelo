@@ -135,8 +135,12 @@ export function AdminLayout({ children }: AdminLayoutProps) {
           </div>
         </aside>
 
-        {/* Main Operating Surface */}
-        <main className="flex-1 p-4 sm:p-6 lg:p-8 overflow-y-auto">{children}</main>
+        {/* Main Operating Surface.
+            id="main" matches the root layout's skip link; without it the link
+            was broken on all 5 admin routes. */}
+        <main id="main" className="flex-1 p-4 sm:p-6 lg:p-8 overflow-y-auto">
+          {children}
+        </main>
       </div>
     </div>
   );

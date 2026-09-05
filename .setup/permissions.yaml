@@ -1,0 +1,225 @@
+# Kynvelo — Kiro Agent Autonomy Configuration
+#
+# INSTALL (PowerShell, one line):
+#   Copy-Item "e:\projects\matrix\KYNVELO\.setup\permissions.yaml" "$env:USERPROFILE\.kiro\settings\permissions.yaml" -Force
+#
+# This is a COMPLETE REPLACEMENT for your current ~/.kiro/settings/permissions.yaml.
+# Everything you already had is preserved below; the gaps are filled in.
+#
+# WHY YOU WERE BEING PROMPTED CONSTANTLY:
+#   Your previous config had NO `fs_write` rule at all. Kiro's defaults only grant
+#   fs_read on ./**, so every single file edit fell through to "ask". That one
+#   missing rule was the whole problem.
+#   Also missing: skill, subagent, diagnostics, and any mcp wildcard.
+#
+# HOW EVALUATION WORKS (important):
+#   Deny-overrides. There is NO scope precedence. deny > ask > allow, and the most
+#   restrictive matching rule wins no matter where it came from. So the guardrails
+#   at the bottom cannot be defeated by the allows above them. Order is irrelevant.
+#
+# WILDCARD SUPPORT DIFFERS BY CAPABILITY:
+#   fs_read / fs_write : * (one path segment), ** (crosses separators), {a,b}, [abc]
+#   shell / mcp / web  : * ONLY. No **, no ?, no character classes.
+#   Compound shell commands (; && || |) are split and each part matched separately,
+#   so "npm *" will not silently authorize `npm test ; curl evil.com`.
+
+rules:
+  # ===========================================================================
+  # FILESYSTEM
+  # ===========================================================================
+   
+  - capability: fs_read
+    effect: allow
+
+  # THE FIX. Without this, every edit prompts.
+  - capability: fs_write
+    effect: allow
+    match: ["**"]
+
+  # ===========================================================================
+  # SHELL — your original list, de-duplicated and with the malformed entries
+  # dropped. Removed: "$json *", "$body *", "if *", "foreach($f *" (shell
+  # patterns match a command name, so these could never fire), and the two
+  # giant space-joined strings, which matched nothing as single patterns.
+  # ===========================================================================
+  - capability: shell
+    effect: allow
+    match:
+      # version control / GitHub
+      - "git *"
+      - "gh *"
+      # node ecosystem
+      - "node *"
+      - "npm *"
+      - "npx *"
+      - "pnpm *"
+      - "yarn *"
+      - "tsc *"
+      - "eslint *"
+      - "next *"
+      - "playwright *"
+      # python ecosystem
+      - "python *"
+      - "python3 *"
+      - "py *"
+      - "pip *"
+      - "uv *"
+      - "uvx *"
+      # project tooling you already had
+      - "supabase *"
+      - "graphify *"
+      - "redis-server *"
+      # shells / interop
+      - "powershell *"
+      - "cmd *"
+      - "wsl *"
+      # read-only PowerShell inspection
+      - "Get-ChildItem*"
+      - "Get-Content*"
+      - "Get-Command*"
+      - "Get-Process*"
+      - "Get-Service*"
+      - "Get-Item*"
+      - "Select-String*"
+      - "Select-Object*"
+      - "Measure-Object*"
+      - "Test-Path*"
+      - "Resolve-Path*"
+      - "ConvertTo-Json*"
+      - "ConvertFrom-Json*"
+      - "Write-Output*"
+      - "Start-Sleep*"
+      - "Sort-Object*"
+      - "Where-Object*"
+      - "ForEach-Object*"
+      - "Format-Table*"
+      - "Out-String*"
+      # safe mutation
+      - "New-Item*"
+      - "Copy-Item*"
+      - "Set-Content*"
+      - "Add-Content*"
+      # misc you already had
+      - "dir *"
+      - "findstr *"
+      - "curl *"
+      - "ssh *"
+      - "scp *"
+    exclude:
+      - "npm publish*"
+      - "pnpm publish*"
+      - "yarn publish*"
+      - "git push --force*"
+      - "git push -f*"
+      - "git reset --hard*"
+      - "git clean -fd*"
+      - "git clean -fdx*"
+      - "git branch -D*"
+      - "gh repo delete*"
+      - "gh release delete*"
+      - "gh secret set*"
+
+  # ===========================================================================
+  # MCP — all servers, all tools, no prompts.
+  # Covers playwright, shadcn, memory, sequential-thinking, context7, magic,
+  # Neon, and the supabase power.
+  # ===========================================================================
+  - capability: mcp
+    effect: allow
+    match: ["*"]
+
+  # ===========================================================================
+  # AGENT CAPABILITIES
+  # ===========================================================================
+  - capability: skill
+    effect: allow
+
+  - capability: subagent
+    effect: allow
+
+  - capability: power
+    effect: allow
+
+  - capability: context
+    effect: allow
+
+  - capability: diagnostics
+    effect: allow
+
+  - capability: web_fetch
+    effect: allow
+
+  - capability: web_search
+    effect: allow
+
+  # ===========================================================================
+  # GUARDRAILS
+  # These deny rules override every allow above. Keep them.
+  # ===========================================================================
+
+  # Never pull secrets into model context
+  - capability: fs_read
+    effect: deny
+    match:
+      - "**/.env"
+      - "**/.env.*"
+      - "**/*.pem"
+      - "**/*.key"
+      - "**/*.p12"
+      - "**/*.pfx"
+      - "**/*.keystore"
+      - "**/id_rsa*"
+      - "**/id_ed25519*"
+      - "**/secrets/**"
+      - "**/credentials.json"
+      - "**/service-account*.json"
+      - "**/.aws/credentials"
+      - "**/.ssh/**"
+
+  - capability: fs_write
+    effect: deny
+    match:
+      - "**/.env"
+      - "**/.env.*"
+      - "**/*.pem"
+      - "**/*.key"
+      - "**/*.p12"
+      - "**/*.pfx"
+      - "**/*.keystore"
+      - "**/secrets/**"
+      - "**/.ssh/**"
+
+  # Destructive, privilege-escalating, or exfiltrating shell
+  - capability: shell
+    effect: deny
+    match:
+      - "rm -rf *"
+      - "Remove-Item -Recurse -Force *"
+      - "Remove-Item -Force -Recurse *"
+      - "sudo *"
+      - "runas *"
+      - "shutdown*"
+      - "Restart-Computer*"
+      - "Stop-Computer*"
+      - "Format-Volume*"
+      - "Clear-Disk*"
+      - "curl * | sh*"
+      - "curl * | bash*"
+      - "iwr * | iex*"
+      - "Invoke-Expression*"
+      - "Invoke-WebRequest * | Invoke-Expression*"
+
+  # Confirm before anything that touches live infrastructure or real data
+  - capability: shell
+    effect: ask
+    match:
+      - "*prod*"
+      - "*production*"
+      - "vercel deploy*"
+      - "vercel --prod*"
+      - "*manage.py migrate*"
+      - "*manage.py flush*"
+      - "*manage.py dbshell*"
+      - "supabase db reset*"
+      - "supabase link*"
+      - "docker*push*"

@@ -1,63 +1,100 @@
-"use client";
+import type { Metadata } from "next";
+import Link from "next/link";
+import { SiteHeader } from "@/components/layout/site-header";
+import { SiteFooter } from "@/components/layout/site-footer";
+import { PricingTables } from "@/components/marketing/pricing-tables";
+import { Faq } from "@/components/marketing/faq";
+import { Display, Lede, Section, Shell, V } from "@/components/ui/section";
 
-import React from "react";
-import { Navbar } from "@/components/layout/navbar";
-import { UnifiedPricing } from "@/components/blocks/unified-pricing";
-import { Footer } from "@/components/layout/footer";
-import { Badge } from "@/components/ui/badge";
+export const metadata: Metadata = {
+  title: "Pricing",
+  description:
+    "Athlete plans from free to ₹299/month. Gym plans from ₹2,999/month for up to 100 members, with ₹1,499 and ₹2,799 capacity blocks. All prices exclude 18% GST.",
+  alternates: { canonical: "/pricing" },
+};
+
+const FAQ_ITEMS = [
+  {
+    q: "Do I have to buy new turnstiles?",
+    a: (
+      <>
+        No. Kynvelo drives existing turnstiles over a standard dry-contact relay,
+        which is what ZKTeco, Hikvision, eSSL and Dormakaba units already expose.
+        If your gate opens on a 300 ms contact closure, it will work.{" "}
+        <Link
+          href="/enterprise"
+          className="text-ink underline decoration-line underline-offset-4 hover:text-primary"
+        >
+          Full hardware notes
+        </Link>
+        .
+      </>
+    ),
+  },
+  {
+    q: "Is GST included in these prices?",
+    a: "No. Gym plans are subject to 18% GST — 9% CGST plus 9% SGST — under SAC 999723 for fitness centre services. Tax invoices are generated automatically so you can claim input credit.",
+  },
+  {
+    q: "What is the setup fee for?",
+    a: "A one-time ₹5,000–₹15,000 charge covering white-label branding setup, staff training and migrating your existing member records. It is waived if you prepay annually. The range depends on how much member data needs cleaning before import.",
+  },
+  {
+    q: "What happens if we go over our member limit?",
+    a: "Nothing breaks. Gates keep opening and reception keeps working. You add a capacity block — ₹1,499 for 50 members or ₹2,799 for 100 — and billing prorates from that point.",
+  },
+  {
+    q: "Do you sell a lifetime licence?",
+    a: "No, and we won't. Hosting, payment gateway integration and support are ongoing costs; a one-time fee cannot fund them. Any vendor offering a fitness SaaS lifetime deal is either subsidising you with new sales or planning to stop maintaining it.",
+  },
+  {
+    q: "Is the athlete app genuinely free?",
+    a: "Yes. Workout logging, the plate calculator, personal records and 1RM estimates are free permanently, with no ads and no selling of your training or health data. The paid tiers exist because the AI meal scan and unlimited history cost us money per user.",
+  },
+  {
+    q: "Can members use the app if their gym isn't on Kynvelo?",
+    a: "Yes. Athletes sign up directly and everything except the gym check-in pass works normally. If the gym joins later, the account links to it without losing history.",
+  },
+];
 
 export default function PricingPage() {
   return (
-    <div className="min-h-screen flex flex-col bg-[#050608] text-ink">
-      <Navbar />
+    <>
+      <SiteHeader audience="neutral" />
 
-      <main className="flex-1 py-12">
-        <UnifiedPricing />
-
-        {/* Hardware & Overage Pricing FAQ */}
-        <section className="py-16 border-t border-white/[0.08] max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-2xl mx-auto mb-12 space-y-2">
-            <Badge variant="primary" className="font-mono text-[10px]">
-              HARDWARE & OVERAGE POLICIES
-            </Badge>
-            <h2 className="text-2xl sm:text-3xl font-bold text-ink">
-              Frequently Asked Billing Questions
-            </h2>
+      <main id="main">
+        <Shell className="py-16 sm:py-24">
+          <div className="max-w-3xl space-y-6">
+            <Display as="h1" size="lg">
+              Priced so the <V>maths works</V> at 80 members.
+            </Display>
+            <Lede>
+              Recovering three or four members a month covers the software
+              several times over. Every number below is the real number — GST and
+              the setup fee are stated, not buried.
+            </Lede>
           </div>
+        </Shell>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 font-mono text-xs">
-            <div className="p-6 rounded-2xl glass-panel space-y-2 border border-white/10">
-              <h3 className="font-bold text-sm text-ink">Do I have to buy new turnstiles?</h3>
-              <p className="text-ink-muted leading-relaxed font-sans">
-                No. Kynvelo’s universal TCP/IP relay controller integrates seamlessly with existing turnstiles (ZKTeco, Hikvision, eSSL, Dormakaba) using standard 300ms dry-contact relays.
-              </p>
+        <Section rule={false} size="sm" className="!pt-0">
+          <PricingTables />
+        </Section>
+
+        <Section>
+          <div className="grid gap-12 lg:grid-cols-12 lg:gap-16">
+            <div className="lg:col-span-4">
+              <Display size="sm">
+                The awkward <V>questions</V>.
+              </Display>
             </div>
-
-            <div className="p-6 rounded-2xl glass-panel space-y-2 border border-white/10">
-              <h3 className="font-bold text-sm text-ink">Is GST included in the prices?</h3>
-              <p className="text-ink-muted leading-relaxed font-sans">
-                All gym business pricing is subject to 18% Indian GST (9% CGST + 9% SGST) under SAC Code 999723 (Fitness Center Services). Full tax invoices are generated automatically for your input tax credits.
-              </p>
-            </div>
-
-            <div className="p-6 rounded-2xl glass-panel space-y-2 border border-white/10">
-              <h3 className="font-bold text-sm text-ink">What happens if our gym exceeds member tiers?</h3>
-              <p className="text-ink-muted leading-relaxed font-sans">
-                We never shut off turnstile gates or lock your reception. If your gym exceeds active member capacity, overages are billed at a flat ₹10 per additional member, or you can upgrade tiers seamlessly with prorated billing.
-              </p>
-            </div>
-
-            <div className="p-6 rounded-2xl glass-panel space-y-2 border border-white/10">
-              <h3 className="font-bold text-sm text-ink">Is the athlete app really free?</h3>
-              <p className="text-ink-muted leading-relaxed font-sans">
-                Yes. Core progressive overload workout logging, Olympic barbell plate math, personal records, and data exports are free forever with zero advertisements.
-              </p>
+            <div className="lg:col-span-8">
+              <Faq items={FAQ_ITEMS} />
             </div>
           </div>
-        </section>
+        </Section>
       </main>
 
-      <Footer />
-    </div>
+      <SiteFooter />
+    </>
   );
 }

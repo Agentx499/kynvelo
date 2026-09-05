@@ -115,7 +115,7 @@ export default function PulsePage() {
         {/* Quick Action Shortcuts */}
         <div className="space-y-2">
           <span className="text-xs font-mono font-bold text-ink-subtle uppercase tracking-wider block">
-            TODAY'S ACTIONS
+            TODAY&apos;S ACTIONS
           </span>
           <div className="grid grid-cols-2 gap-2">
             <Link href="/app/workout/active">

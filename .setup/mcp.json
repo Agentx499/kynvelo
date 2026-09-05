@@ -1,0 +1,76 @@
+{
+  "//": "Kynvelo — Kiro global MCP config. INSTALL: copy to ~/.kiro/settings/mcp.json",
+  "//_autoApprove": "'*' auto-approves every tool on that server, so no per-call prompts.",
+  "//_windows_note": "If a stdio server fails to start on Windows with an npx/ENOENT error, wrap it: command 'cmd', args ['/c','npx','-y','<pkg>']. See github.com/microsoft/playwright-mcp/issues/1540",
+
+  "mcpServers": {
+    "playwright": {
+      "command": "npx",
+      "args": ["-y", "@playwright/mcp@latest", "--headless", "--browser", "chromium"],
+      "disabled": false,
+      "autoApprove": ["*"]
+    },
+
+    "shadcn": {
+      "command": "npx",
+      "args": ["-y", "shadcn@latest", "mcp"],
+      "disabled": false,
+      "autoApprove": ["*"]
+    },
+
+    "memory": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-memory"],
+      "env": {
+        "MEMORY_FILE_PATH": "e:\\projects\\matrix\\KYNVELO\\.setup\\memory-graph.json"
+      },
+      "disabled": false,
+      "autoApprove": ["*"]
+    },
+
+    "sequential-thinking": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-sequential-thinking"],
+      "disabled": false,
+      "autoApprove": ["*"]
+    },
+
+    "context7": {
+      "//": "Upstash Context7 — live library docs. Get a free key at context7.com/dashboard",
+      "command": "npx",
+      "args": ["-y", "@upstash/context7-mcp", "--api-key", "${CONTEXT7_API_KEY}"],
+      "disabled": false,
+      "autoApprove": ["*"]
+    },
+
+    "magic": {
+      "//": "21st.dev Magic — React/Tailwind component generation. Key at 21st.dev/magic/console",
+      "//_unverified": "Package name and env var come from the 21st.dev vendor, not Kiro docs. Verify at 21st.dev before relying on it. Set disabled=false once you have a key.",
+      "command": "npx",
+      "args": ["-y", "@21st-dev/magic@latest"],
+      "env": {
+        "API_KEY": "${TWENTY_FIRST_API_KEY}"
+      },
+      "disabled": true,
+      "autoApprove": ["*"]
+    },
+
+    "Neon": {
+      "//": "Carried over from your existing ~/.cursor/mcp.json and ~/.gemini/settings.json",
+      "url": "https://mcp.neon.tech/mcp",
+      "disabled": false,
+      "autoApprove": ["*"]
+    }
+  },
+
+  "powers": {
+    "//": "PRESERVED from your current config — do not drop this block.",
+    "mcpServers": {
+      "power-supabase-hosted-supabase": {
+        "url": "https://mcp.supabase.com/mcp",
+        "disabled": false,
+        "autoApprove": ["*"]
+      }
+    }
+  }
+}

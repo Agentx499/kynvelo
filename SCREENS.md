@@ -209,6 +209,10 @@ Shared by both **Direct B2C Fitness Enthusiasts** (`gym_id = "kynvelo-direct"`) 
 
 ## Part 2: Gym Owner & Staff Mobile Operations (Screens 49 – 70)
 
+> ⚠️ **Numbering collision — see the Summary Matrix note.** These bullet numbers overlap Part 1's screens 49–56. The correct range for this part is **57 – 78**. Cite screens here by route, not by number, until the renumber is done across SCREENS.md, WIREFRAMES_AND_COMPONENTS.md and DESIGN_ARCHITECTURE.md together.
+>
+> ⚠️ **None of this part is built.** No `/ops/*` route exists in `frontend/app/`. `robots.ts` already disallows `/ops/`, so the policy was written against this spec rather than against the code.
+
 Designed for fast, one-handed mobile operations on the gym floor or at reception.
 
 - **Screen 49: Owner & Staff Login**
@@ -276,7 +280,9 @@ Designed for fast, one-handed mobile operations on the gym floor or at reception
   - *Purpose:* Upload gym logo, pick primary brand color (OKLCH), set custom display title, and live app mockup preview.
 - **Screen 70: Referral Partner Commission Tracker** *(Added per Master Spec §17.3)*
   - *Route:* `/ops/partner/payouts`
-  - *Purpose:* Surface C dashboard: Referral link, referred gyms list, active gym months, and ₹10,000 monthly commission payout status.
+  - *Purpose:* Surface C dashboard: referral code and link, referred gyms list, months accrued of the 6 eligible, commission earned against the ₹10,000 per-gym cap, and payout status against the ₹1,000 minimum threshold.
+  - *Corrected 2026-09-04:* previously "₹10,000 monthly commission payout status". Terms are 20% of base plan fee for 6 months capped at ₹10,000 **total** per gym — see PRODUCT.md 5.3.
+  - *Not built.* The public `/partners` page sells this dashboard but no `/ops/*` route exists, so a partner who signs up has nowhere to land.
 
 ---
 
@@ -326,7 +332,8 @@ High-performance Server-Side Rendered (SSR) marketing pages adhering to **Phase 
   - *Components:* Dedicated app-store listing preview, turnstile relay hardware compatibility (TCP/IP & USB), SLA tiers, executive consultation form.
 - **Page 82: Referral Partner Program Portal**
   - *Route:* `/partners`
-  - *Components:* Explanation of ₹10,000 monthly commission per referred gym for 10 months, partner registration form.
+  - *Components:* Explanation of the commission terms (20% of base plan fee, 6 months, capped at ₹10,000 total per gym, ₹1,000 minimum payout), live commission calculator, registration stepper, payout FAQ.
+  - *Corrected 2026-09-04:* previously stated "₹10,000 monthly commission per referred gym for 10 months", which contradicts PRODUCT.md 5.3. See FEATURES.md 8.1.
 - **Page 83: Public Registration & Onboarding Wizard**
   - *Route:* `/signup`
   - *Components:* Clean 3-step signup: Account type (Gym vs Athlete) $\rightarrow$ Business details $\rightarrow$ Referral code validation.
@@ -360,11 +367,19 @@ Mandatory states from **Phases 3, 4, 6 & 25 of the SaaS Checklist**.
 
 ## Summary Matrix
 
-| Section | Target Surface | Screen Count | Key Capabilities |
-|---|---|---|---|
-| **Part 1** | Member Mobile App (B2C & Gym) | 48 | Attendance, Dynamic QR, Workouts, Food AI Scan, Renewals |
-| **Part 2** | Gym Owner & Staff Mobile | 22 | Red-List CRM, Turnstiles, Member Roster, Branding Themer |
-| **Part 3** | Gym Owner Web Command Center | 7 | Fullscreen Kiosk, Multi-column Grids, Billing Ledger |
-| **Part 4** | Public Marketing Website | 7 | SSR Hero, ROI Calculator, Pricing, Enterprise & Partners |
-| **Part 5** | Global Security & System States | 5 | 403 Forbidden, 404, Offline PWA, Biometrics, Sentry 500 |
-| **Total** | **All Product Surfaces** | **89** | **Complete Master Specification** |
+| Section | Target Surface | Screen Count | Built | Key Capabilities |
+|---|---|---|---|---|
+| **Part 1** | Member Mobile App (B2C & Gym) | 56 | 7 | Attendance, Dynamic QR, Workouts, Food AI Scan, Renewals |
+| **Part 2** | Gym Owner & Staff Mobile (`/ops/*`) | 22 | **0** | Red-List CRM, Turnstiles, Member Roster, Branding Themer |
+| **Part 3** | Gym Owner Web Command Center | 7 | 4 | Fullscreen Kiosk, Multi-column Grids, Billing Ledger |
+| **Part 4** | Public Marketing Website | 7 | **7** | SSR Hero, ROI Calculator, Pricing, Enterprise & Partners |
+| **Part 5** | Global Security & System States | 5 | 2 | 403 Forbidden, 404, Offline PWA, Biometrics, Sentry 500 |
+| **Total** | **All Product Surfaces** | **97** | **20** | **Complete Master Specification** |
+
+> **Count corrected 2026-09-04.** This matrix previously listed Part 1 as 48 screens and a total of 89, contradicting the document header's 97. Part 1 genuinely enumerates 56 screens — 8 advanced-telemetry frames were appended per LEARNING.md Incident 006 — so 56 + 22 + 7 + 7 + 5 = 97 is correct.
+>
+> **Known defect, not yet fixed: screen numbers 49–56 are assigned twice.** Part 1 enumerates 1–56 while Part 2's bullets still run 49–70, because Parts 2–5 were never renumbered when Part 1 grew. Every bullet number in Parts 2–5 is therefore **8 lower than it should be**. Correct ranges would be Part 2 = 57–78, Part 3 = 79–85, Part 4 = 86–92, Part 5 = 93–97.
+>
+> A renumber is deferred deliberately: WIREFRAMES_AND_COMPONENTS.md and DESIGN_ARCHITECTURE.md cite the current numbers, so the renumber must be done across all three documents in one pass. **Until then, cite screens by route and title, not by number.**
+>
+> **Build status as of 2026-09-04:** Part 4 (public marketing) is complete. Part 2 does not exist at all — no `/ops/*` route has been created, which means Screen 70's partner payout dashboard has no destination despite `/partners` selling it. Part 5 has 404 and 500 wired; the 403 and offline components are built but unreferenced, and biometric re-auth is absent.

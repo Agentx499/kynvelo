@@ -1,133 +1,371 @@
 @import "tailwindcss";
 
+/* ==========================================================================
+   KYNVELO DESIGN SYSTEM v2 — "Flat Kinetic"
+   --------------------------------------------------------------------------
+   Derived from the logo: a razor-cut volt monogram on near-black with heavy
+   negative space. Flat. No gradient on the mark, no glow, no bevel.
+   The site now follows the same rules.
+
+   Color strategy: RESTRAINED. Tinted neutrals + one accent, volt <= 10% of
+   surface area. Volt appears ONLY on: one word per display headline, primary
+   buttons, the single highlighted plan, and live-state indicators.
+
+   Deliberately removed in v2 (all Impeccable absolute bans):
+     .glass-panel / .glass-panel-elevated  - glassmorphism as default
+     .glow-volt / .glow-cyan               - decorative glow
+     body radial-gradient stack            - three blurred blobs behind
+                                             every page
+     1px border + >=16px blur shadow       - the "ghost card" pairing
+   Surfaces cut from 4 to 2. Radii tightened (logo has zero rounding).
+   ========================================================================== */
+
 @theme inline {
-  --color-canvas: var(--kynvelo-canvas);
-  --color-surface-1: var(--kynvelo-surface-1);
-  --color-surface-2: var(--kynvelo-surface-2);
-  --color-surface-3: var(--kynvelo-surface-3);
-  --color-surface-4: var(--kynvelo-surface-4);
-  --color-hairline: var(--kynvelo-hairline);
-  --color-hairline-strong: var(--kynvelo-hairline-strong);
-  --color-hairline-hover: var(--kynvelo-hairline-hover);
-  --color-primary: var(--kynvelo-primary);
-  --color-primary-hover: var(--kynvelo-primary-hover);
-  --color-primary-active: var(--kynvelo-primary-active);
-  --color-primary-dim: var(--kynvelo-primary-dim);
-  --color-on-primary: var(--kynvelo-on-primary);
-  --color-ink: var(--kynvelo-ink);
-  --color-ink-muted: var(--kynvelo-ink-muted);
-  --color-ink-subtle: var(--kynvelo-ink-subtle);
-  --color-success: var(--kynvelo-success);
-  --color-warning: var(--kynvelo-warning);
-  --color-danger: var(--kynvelo-danger);
-  --color-info: var(--kynvelo-info);
-  --color-macro-protein: var(--kynvelo-macro-protein);
-  --color-macro-carbs: var(--kynvelo-macro-carbs);
-  --color-macro-fat: var(--kynvelo-macro-fat);
-  --font-sans: var(--font-jakarta), system-ui, -apple-system, sans-serif;
-  --font-mono: var(--font-jetbrains), monospace;
+  --color-canvas: var(--k-canvas);
+  --color-surface: var(--k-surface);
+  --color-surface-2: var(--k-surface-2);
+
+  --color-line: var(--k-line);
+  --color-line-strong: var(--k-line-strong);
+
+  --color-primary: var(--k-volt);
+  --color-primary-hover: var(--k-volt-hover);
+  --color-primary-active: var(--k-volt-active);
+  --color-primary-dim: var(--k-volt-dim);
+  --color-on-primary: var(--k-on-volt);
+
+  --color-ink: var(--k-ink);
+  --color-ink-muted: var(--k-ink-muted);
+  --color-ink-subtle: var(--k-ink-subtle);
+
+  --color-success: var(--k-success);
+  --color-warning: var(--k-warning);
+  --color-danger: var(--k-danger);
+  --color-info: var(--k-info);
+
+  --color-macro-protein: var(--k-protein);
+  --color-macro-carbs: var(--k-carbs);
+  --color-macro-fat: var(--k-fat);
+
+  --font-display: var(--font-barlow-condensed), "Barlow Condensed", system-ui, sans-serif;
+  --font-sans: var(--font-barlow), Barlow, system-ui, -apple-system, sans-serif;
+  --font-mono: var(--font-jetbrains), "JetBrains Mono", ui-monospace, monospace;
+
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-xl: 10px;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+
+  /* ------------------------------------------------------------------------
+     LEGACY TOKEN ALIASES
+     The member PWA (/app/*) and gym-owner CRM (/admin/*) are product
+     surfaces, not marketing, and are out of scope for this overhaul. They
+     reference the v1 four-tier surface ramp and the hairline-* names:
+     hairline (234 uses), surface-1 (85), surface-3 (39), surface-4 (3),
+     hairline-strong (17).
+
+     Rather than break them or rewrite 20+ product screens, the old names
+     collapse onto the new two-surface system. Those screens keep compiling
+     and inherit the calmer palette for free. Marketing pages use the v2
+     names directly.
+     ---------------------------------------------------------------------- */
+  --color-surface-1: var(--k-surface);
+  --color-surface-3: var(--k-surface-2);
+  --color-surface-4: var(--k-surface-2);
+  --color-hairline: var(--k-line);
+  --color-hairline-strong: var(--k-line-strong);
+  --color-hairline-hover: var(--k-line-strong);
+  --color-ink-disabled: #4A515C;
+  --color-macro-calories: var(--k-volt);
 }
 
 :root {
-  /* Linear / Raycast Ultra-Deep Luxury Obsidian Canvas */
-  --kynvelo-canvas: #050608;                        /* Ultra-deep black-obsidian */
-  --kynvelo-surface-1: #0D0E12;                     /* Primary panel surface */
-  --kynvelo-surface-2: #13151A;                     /* Secondary card surface */
-  --kynvelo-surface-3: #1A1D24;                     /* Elevated interactive surface */
-  --kynvelo-surface-4: #222630;                     /* Highlight surface */
+  /* --- Canvas & surfaces. Two, not four. ------------------------------- */
+  --k-canvas: #050608;
+  --k-surface: #0C0E12;
+  --k-surface-2: #14171D;   /* hover / nested only. Never a third card tier. */
 
-  /* Hairlines & Precision Specular Borders */
-  --kynvelo-hairline: rgba(255, 255, 255, 0.08);    /* Subtle boundary */
-  --kynvelo-hairline-strong: rgba(255, 255, 255, 0.16);
-  --kynvelo-hairline-hover: rgba(255, 255, 255, 0.28);
+  /* --- Hairlines ------------------------------------------------------- */
+  --k-line: rgba(255, 255, 255, 0.09);
+  --k-line-strong: rgba(255, 255, 255, 0.17);
 
-  /* Primary Brand: Kinetic Volt */
-  --kynvelo-primary: #C6FF00;
-  --kynvelo-primary-hover: #D4FF26;
-  --kynvelo-primary-active: #B2E600;
-  --kynvelo-primary-dim: rgba(198, 255, 0, 0.12);
-  --kynvelo-on-primary: #050608;
+  /* --- Kinetic Volt. Sampled from the logo mark. ----------------------- */
+  --k-volt: #C6FF00;
+  --k-volt-hover: #D4FF33;
+  --k-volt-active: #AEE300;
+  --k-volt-dim: rgba(198, 255, 0, 0.10);
+  --k-on-volt: #050608;
 
-  /* Inks & Text */
-  --kynvelo-ink: #F7F8F8;
-  --kynvelo-ink-muted: #B4B9C4;
-  --kynvelo-ink-subtle: #737A88;
+  /* --- Ink. All verified >= 4.5:1 against --k-canvas. ------------------ */
+  --k-ink: #F7F8F8;         /* ~19:1  */
+  --k-ink-muted: #A8AEB8;   /* ~9.3:1 */
+  --k-ink-subtle: #7A8290;  /* ~5.0:1 - floor. Never go lighter for text. */
 
-  /* Semantics */
-  --kynvelo-success: #10B981;
-  --kynvelo-warning: #F59E0B;
-  --kynvelo-danger: #EF4444;
-  --kynvelo-info: #00F0FF;
+  /* --- Semantic ------------------------------------------------------- */
+  --k-success: #34D399;
+  --k-warning: #FBBF24;
+  --k-danger: #F87171;
+  --k-info: #38BDF8;
 
-  /* Macros */
-  --kynvelo-macro-protein: #00F0FF;
-  --kynvelo-macro-carbs: #F59E0B;
-  --kynvelo-macro-fat: #EF4444;
+  /* --- Macro coding (nutrition suite) --------------------------------- */
+  --k-protein: #38BDF8;
+  --k-carbs: #FBBF24;
+  --k-fat: #FB7185;
+
+  /* --- Semantic z-index scale. Never arbitrary 999. -------------------- */
+  --z-base: 0;
+  --z-raised: 10;
+  --z-sticky: 20;
+  --z-backdrop: 30;
+  --z-modal: 40;
+  --z-toast: 50;
+  --z-tooltip: 60;
 }
 
-/* Dynamic White-Label Overrides */
-[data-tenant="olympic-gym"] {
-  --kynvelo-primary: #00F0FF;
-  --kynvelo-primary-hover: #26F4FF;
+/* Tenant white-label override. Canvas, hairlines and type stay invariant;
+   only the accent moves. Keeps every gym looking engineered. */
+[data-tenant] {
+  --k-volt: var(--tenant-primary, #C6FF00);
+  --k-volt-hover: var(--tenant-primary-hover, #D4FF33);
+  --k-on-volt: var(--tenant-on-primary, #050608);
+}
+
+/* ==========================================================================
+   BASE
+   ========================================================================== */
+
+*,
+*::before,
+*::after {
+  border-color: var(--k-line);
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
 }
 
 body {
-  background-color: var(--kynvelo-canvas);
-  color: var(--kynvelo-ink);
+  background-color: var(--k-canvas);
+  color: var(--k-ink);
   font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.6;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
-  background-image: 
-    radial-gradient(circle at 50% -20%, rgba(198, 255, 0, 0.08), transparent 45%),
-    radial-gradient(circle at 100% 40%, rgba(0, 240, 255, 0.04), transparent 40%),
-    radial-gradient(circle at 0% 80%, rgba(198, 255, 0, 0.03), transparent 40%);
-  background-attachment: fixed;
+  -moz-osx-font-smoothing: grayscale;
+  font-synthesis-weight: none;
 }
 
-/* Luxury Glass Specular Layer */
-.glass-panel {
-  background: linear-gradient(180deg, rgba(20, 22, 28, 0.75) 0%, rgba(13, 14, 18, 0.85) 100%);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 
-    inset 0 1px 0 0 rgba(255, 255, 255, 0.12),
-    0 20px 40px -15px rgba(0, 0, 0, 0.7);
-  backdrop-filter: blur(16px);
+::selection {
+  background: var(--k-volt);
+  color: var(--k-on-volt);
 }
 
-.glass-panel-elevated {
-  background: linear-gradient(180deg, rgba(26, 29, 36, 0.85) 0%, rgba(17, 19, 24, 0.95) 100%);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  box-shadow: 
-    inset 0 1px 0 0 rgba(255, 255, 255, 0.18),
-    0 25px 50px -12px rgba(0, 0, 0, 0.8),
-    0 0 30px rgba(198, 255, 0, 0.05);
-  backdrop-filter: blur(20px);
+/* Display type. Condensed grotesque, matching the logo wordmark.
+   Letter-spacing floor is -0.03em; never tighter or the letters touch. */
+.display {
+  font-family: var(--font-display);
+  font-weight: 700;
+  line-height: 0.92;
+  letter-spacing: -0.025em;
+  text-transform: none;
+  text-wrap: balance;
 }
 
-/* Kinetic Glows */
-.glow-volt {
-  box-shadow: 0 0 25px -5px rgba(198, 255, 0, 0.4);
+/* Numerals: tabular mono so columns of weights, reps and rupees align.
+   Used for data only, never as decorative "technical" styling. */
+.tnum {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
 }
 
-.glow-cyan {
-  box-shadow: 0 0 25px -5px rgba(0, 240, 255, 0.4);
+/* Long-form prose: cap measure at 68ch, reduce orphans. */
+.prose-measure {
+  max-width: 68ch;
+  text-wrap: pretty;
 }
 
-/* Custom Scrollbar for Flight-Deck Aesthetic */
-::-webkit-scrollbar {
-  width: 6px;
+/* ==========================================================================
+   RANGE SLIDER
+   The visual track is 6px but the input itself is 44px tall so the touch
+   target meets the minimum. Styling the track with a bare `h-1.5` utility made
+   the whole control 6px high, which is unusable on a phone.
+   ========================================================================== */
+
+.k-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 44px;
+  background: transparent;
+  cursor: pointer;
+}
+
+.k-slider::-webkit-slider-runnable-track {
   height: 6px;
+  border-radius: 999px;
+  background: var(--k-surface-2);
 }
 
+.k-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  margin-top: -7px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--k-volt);
+}
+
+.k-slider::-moz-range-track {
+  height: 6px;
+  border-radius: 999px;
+  background: var(--k-surface-2);
+}
+
+.k-slider::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--k-volt);
+}
+
+.k-slider:focus-visible {
+  outline: none;
+}
+
+.k-slider:focus-visible::-webkit-slider-thumb {
+  outline: 2px solid var(--k-volt);
+  outline-offset: 3px;
+}
+
+.k-slider:focus-visible::-moz-range-thumb {
+  outline: 2px solid var(--k-volt);
+  outline-offset: 3px;
+}
+
+/* ==========================================================================
+   SEGMENTED CONTROL
+   Shared by the audience, interval, plan and role toggles. min-height rather
+   than padding so the 44px floor holds regardless of font size.
+   ========================================================================== */
+
+.k-seg {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm);
+  padding-inline: 1rem;
+  font-size: 14px;
+  cursor: pointer;
+  transition: color 200ms, background-color 200ms;
+}
+
+/* ==========================================================================
+   FOCUS — visible, consistent, never removed
+   ========================================================================== */
+
+:focus-visible {
+  outline: 2px solid var(--k-volt);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* ==========================================================================
+   SCROLLBAR
+   ========================================================================== */
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
 ::-webkit-scrollbar-track {
-  background: #050608;
+  background: var(--k-canvas);
 }
-
 ::-webkit-scrollbar-thumb {
-  background: #222630;
-  border-radius: 9999px;
+  background: #22262E;
+  border: 3px solid var(--k-canvas);
+  border-radius: 99px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #333944;
 }
 
-::-webkit-scrollbar-thumb:hover {
-  background: #343B4A;
+/* ==========================================================================
+   MOTION
+   Entrance animations enhance an already-visible default. Content is never
+   gated behind a transition, so headless renderers and background tabs still
+   paint it.
+   ========================================================================== */
+
+@keyframes k-rise {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 14px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes k-sweep {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes k-pulse-dot {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
+}
+
+.k-rise {
+  animation: k-rise 620ms var(--ease-out-expo) both;
+}
+
+.k-rule {
+  transform-origin: left;
+  animation: k-sweep 900ms var(--ease-out-expo) both;
+}
+
+.k-live-dot {
+  animation: k-pulse-dot 2s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .k-rise,
+  .k-rule,
+  .k-live-dot {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
 }

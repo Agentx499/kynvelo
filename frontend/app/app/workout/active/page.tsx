@@ -44,18 +44,26 @@ export default function ActiveWorkoutPage() {
     return () => clearInterval(timer);
   }, []);
 
-  // Rest Timer Countdown
+  /* Rest timer countdown.
+     The zero case is handled inside the interval callback rather than in the
+     effect body. Calling setRestTimer(null) synchronously during the effect
+     caused a cascading render on the tick that reached zero. */
   useEffect(() => {
     if (restTimer === null) return;
-    if (restTimer <= 0) {
-      // Buzz simulation
-      if (typeof window !== "undefined" && "vibrate" in navigator) {
-        navigator.vibrate([200, 100, 200]);
-      }
-      setRestTimer(null);
-      return;
-    }
-    const timer = setInterval(() => setRestTimer((r) => (r !== null ? r - 1 : null)), 1000);
+
+    const timer = setInterval(() => {
+      setRestTimer((r) => {
+        if (r === null) return null;
+        if (r <= 1) {
+          if (typeof navigator !== "undefined" && "vibrate" in navigator) {
+            navigator.vibrate([200, 100, 200]);
+          }
+          return null;
+        }
+        return r - 1;
+      });
+    }, 1000);
+
     return () => clearInterval(timer);
   }, [restTimer]);
 

@@ -14,6 +14,7 @@ import {
   Bell,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { OfflineBanner } from "@/components/system/offline-banner";
 
 interface MobileShellProps {
   children: React.ReactNode;
@@ -34,6 +35,10 @@ export function MobileShell({ children }: MobileShellProps) {
     <div className="min-h-screen bg-canvas text-ink flex flex-col items-center justify-start">
       {/* Constrained Device Container (Phone frame on desktop, 100% on mobile) */}
       <div className="w-full max-w-md min-h-screen flex flex-col bg-surface-1 border-x border-hairline shadow-2xl relative pb-20">
+        {/* Screen 87. The member app runs an offline check-in queue, so this
+            banner is functional rather than decorative. It was built but never
+            imported anywhere until now. */}
+        <OfflineBanner />
         {/* Top Header Bar */}
         <header className="sticky top-0 z-40 h-14 border-b border-hairline bg-surface-1/90 backdrop-blur-md px-4 flex items-center justify-between">
           <Link href="/app/pulse" className="flex items-center gap-2">
@@ -66,8 +71,12 @@ export function MobileShell({ children }: MobileShellProps) {
           </div>
         </header>
 
-        {/* Main Screen Content */}
-        <main className="flex-1 p-4 overflow-y-auto">{children}</main>
+        {/* Main Screen Content.
+            id="main" is required: the root layout renders a "Skip to content"
+            link targeting #main on every route, and without this the link was
+            broken on all 7 member routes - a WCAG 2.4.1 failure on the screens
+            keyboard users spend the most time in. */}
+        <main id="main" className="flex-1 p-4 overflow-y-auto">{children}</main>
 
         {/* Fixed Bottom Tab Navigation */}
         <nav className="fixed bottom-0 z-50 w-full max-w-md h-16 border-t border-hairline bg-surface-1/95 backdrop-blur-md px-2 flex items-center justify-around">
