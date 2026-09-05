@@ -210,6 +210,15 @@ Whenever an error is encountered, a bug is fixed, or a new pattern is proven suc
 
 ---
 
+### Pattern 012: Comprehensive kiro.dev UI Architecture Integration
+- **Problem:** Growing UI modules, auth shells, marketing widgets, and audit scripts needed structured modular organization to support advanced calculators, live set matrices, TDEE widgets, and SEO metadata.
+- **Solution:** Integrated kiro.dev architecture:
+  1. *Marketing Components:* `device-frame.tsx`, `live-set-matrix.tsx`, `macro-rings.tsx`, `recovery-body.tsx`, `tdee-widget.tsx`, `terminal-stream.tsx`, `churn-calculator.tsx`, `partner-calculator.tsx`, and `tier-card.tsx`.
+  2. *Layout & Auth System:* Clean `site-header.tsx`, `site-footer.tsx`, `auth-shell.tsx`, `auth-form.tsx`, and `forbidden.tsx`.
+  3. *SEO & App Metadata:* Added `manifest.ts`, `robots.ts`, `sitemap.ts`, `apple-icon.tsx`, `opengraph-image.tsx`, and error boundaries (`error.tsx`, `global-error.tsx`).
+
+---
+
 ## 4. Known Pitfalls & Anti-Patterns to Avoid
 
 | Category | Pitfall / Anti-Pattern | Correct Practice |
